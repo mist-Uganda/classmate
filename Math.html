@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Scenarios | MIST</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4b0082; /* Deep Purple for Math */
+            --accent: #d8b4fe;
+            --dark: #1a1a2e;
+            --light: #f8f7ff;
+            --white: #fff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--light); color: var(--dark); line-height: 1.6; }
+
+        header { 
+            background: var(--white); 
+            padding: 1rem 5%; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            position: sticky; 
+            top: 0; 
+            z-index: 1000; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        section { padding: 40px 5%; max-width: 1000px; margin: auto; }
+
+        .scenario-card {
+            background: var(--white);
+            border-left: 5px solid var(--primary);
+            padding: 25px;
+            border-radius: 0 15px 15px 0;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .category-tag {
+            display: inline-block;
+            background: #f3e8ff;
+            color: var(--primary);
+            font-size: 0.75rem;
+            padding: 4px 12px;
+            border-radius: 12px;
+            text-transform: uppercase;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .scenario-text { font-style: italic; color: #444; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 15px; }
+        .question-text { font-weight: 600; font-size: 1.1rem; color: var(--dark); }
+
+        .show-answer-btn {
+            margin-top: 15px;
+            background: none;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 5px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+
+        .show-answer-btn:hover { background: var(--primary); color: white; }
+
+        .answer-box {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background: #faf5ff;
+            border-radius: 8px;
+            border: 1px dashed var(--primary);
+        }
+    .math-hero {
+    position: relative;
+    height: 350px;
+    background: linear-gradient(180deg, #1e0033 0%, #4b0082 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-align: center;
+    overflow: hidden;
+}
+
+.hero-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 3.5rem;
+    z-index: 2;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    text-shadow: 0 0 30px rgba(216, 180, 254, 0.4);
+}
+
+.math-elements {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0.2;
+}
+
+.math-shape {
+    position: absolute;
+    width: 140px;
+    top: 10%;
+    right: 10%;
+    color: #d8b4fe;
+    animation: rotateShape 15s linear infinite;
+}
+
+.pi-icon {
+    position: absolute;
+    width: 80px;
+    bottom: 15%;
+    left: 15%;
+    color: #d8b4fe;
+    animation: floatMath 6s ease-in-out infinite;
+}
+
+@keyframes rotateShape {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes floatMath {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(15deg); }
+}
+
+@media (max-width: 600px) {
+    .hero-title { font-size: 2.2rem; letter-spacing: 3px; }
+    .math-shape { width: 80px; }
+    .pi-icon { width: 50px; }
+}
+
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="index.html" style="text-decoration: none; color: var(--primary); font-weight: bold;">&larr; Back</a>
+    <div style="width: 30px;"></div>
+</header>
+    <div class="math-hero">
+    <div class="math-elements">
+        <svg class="math-shape" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+            <path d="M12 2l10 5v10l-10 5-10-5V7l10-5z"/>
+            <path d="M12 22V12m0 0L2 7m10 5l10-5"/>
+        </svg>
+
+        <svg class="pi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M9 4v16M15 4v16M4 4h16c0 2-2 3-5 3s-6-1-11-1" />
+        </svg>
+    </div>
+    <h1 class="hero-title">Mathematics Bank</h1>
+    <p>Decoding the Patterns of Reality</p>
+</div>
+
+
+<section>
+    <div class="scenario-card">
+        <span class="category-tag">Geometry</span>
+        <div class="scenario-text">
+            <p>The Mpigi Town Council has allocated land for the MIST innovation hub. The site is a composite shape: a rectangle (30m by 40m) with a semi-circular garden on one 30m side. The club needs to fence the perimeter with bundles that cover 15m each. Inside the rectangle, they plan to lay 0.5m x 0.5m tiles, but only have a budget for 4,000 tiles.</p>
+        </div>
+        <div class="question-text">
+            (a) How many fencing bundles must they buy? <br>
+            (b) Are 4,000 tiles enough for the rectangular area?
+        </div>
+        <button class="show-answer-btn" onclick="toggleAnswer(this)">View Solution</button>
+        <div class="answer-box">
+            <strong>Calculations:</strong><br>
+            - <strong>Perimeter:</strong> (40+40+30) + (0.5 * 3.14 * 30) = 110 + 47.1 = 157.1m. <br>
+            - <strong>Bundles:</strong> 157.1 / 15 = 10.47 -> <strong>11 bundles</strong>. <br>
+            - <strong>Tiles:</strong> (30 * 40) / (0.5 * 0.5) = 1,200 / 0.25 = 4,800 tiles. <br>
+            - <strong>Verdict:</strong> No, they are 800 tiles short.
+        </div>
+    </div>
+
+    <div class="scenario-card">
+        <span class="category-tag">Business Math</span>
+        <div class="scenario-text">
+            <p>To fund the club, MIST members produced 50 solar-powered lamps. The cost of materials for each lamp was 15,000 UGX. During a science fair, they sold 40 lamps at a 25% profit. The remaining 10 lamps were slightly damaged and sold at a 10% loss.</p>
+        </div>
+        <div class="question-text">
+            (a) Calculate the total amount of money collected from the sales. <br>
+            (b) Determine the overall percentage profit or loss for the entire venture.
+        </div>
+        <button class="show-answer-btn" onclick="toggleAnswer(this)">View Solution</button>
+        <div class="answer-box">
+            <strong>Calculations:</strong><br>
+            - <strong>Total Cost:</strong> 50 * 15,000 = 750,000 UGX. <br>
+            - <strong>Good Lamps Sales:</strong> 40 * (15,000 * 1.25) = 40 * 18,750 = 750,000 UGX. <br>
+            - <strong>Damaged Lamps Sales:</strong> 10 * (15,000 * 0.90) = 10 * 13,500 = 135,000 UGX. <br>
+            - <strong>Total Revenue:</strong> 885,000 UGX. <br>
+            - <strong>Overall Profit:</strong> ((885,000 - 750,000) / 750,000) * 100 = <strong>18% Profit</strong>.
+        </div>
+    </div>
+
+    <div class="scenario-card">
+        <span class="category-tag">Algebra</span>
+        <div class="scenario-text">
+            <p>A delivery truck carries two types of science kits: Kit X (5kg) and Kit Y (12kg). The truck has a maximum load capacity of 600kg and must carry exactly 80 kits in total to fulfill an order for schools in Butambala.</p>
+        </div>
+        <div class="question-text">
+            (a) Formulate two simultaneous equations to represent this situation. <br>
+            (b) Find the number of each type of kit on the truck.
+        </div>
+        <button class="show-answer-btn" onclick="toggleAnswer(this)">View Solution</button>
+        <div class="answer-box">
+            <strong>Calculations:</strong><br>
+            - <strong>Equations:</strong> <br>
+            1) x + y = 80 <br>
+            2) 5x + 12y = 600 <br>
+            - <strong>Substitution:</strong> x = 80 - y <br>
+            - 5(80 - y) + 12y = 600 -> 400 - 5y + 12y = 600 <br>
+            - 7y = 200 -> y ≈ 28.5 (In real life, 28 Kits of Y and 52 Kits of X).
+        </div>
+    </div>
+</section>
+
+<script>
+    function toggleAnswer(btn) {
+        const box = btn.nextElementSibling;
+        if (box.style.display === "block") {
+            box.style.display = "none";
+            btn.innerText = "View Solution";
+        } else {
+            box.style.display = "block";
+            btn.innerText = "Hide Solution";
+        }
+    }
+</script>
+
+</body>
+</html>

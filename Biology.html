@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biology Scenarios | MIST</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1b4332; /* Forest Green for Biology */
+            --accent: #b7e4c7;
+            --dark: #081c15;
+            --light: #f7fff7;
+            --white: #fff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--light); color: var(--dark); line-height: 1.6; }
+
+        header { 
+            background: var(--white); 
+            padding: 1rem 5%; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            position: sticky; 
+            top: 0; 
+            z-index: 1000; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        section { padding: 40px 5%; max-width: 1000px; margin: auto; }
+
+        .scenario-card {
+            background: var(--white);
+            border-left: 5px solid var(--primary);
+            padding: 25px;
+            border-radius: 0 15px 15px 0;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .category-tag {
+            display: inline-block;
+            background: #d8f3dc;
+            color: var(--primary);
+            font-size: 0.75rem;
+            padding: 4px 12px;
+            border-radius: 12px;
+            text-transform: uppercase;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .scenario-text { font-style: italic; color: #444; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 15px; }
+        .question-text { font-weight: 600; font-size: 1.1rem; color: var(--dark); }
+
+        .show-answer-btn {
+            margin-top: 15px;
+            background: none;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 5px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+
+        .show-answer-btn:hover { background: var(--primary); color: white; }
+
+        .answer-box {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background: #f1f8f5;
+            border-radius: 8px;
+            border: 1px dashed var(--primary);
+        }
+    .bio-hero {
+    position: relative;
+    height: 300px;
+    background: var(--dark); /* Dark green background */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    overflow: hidden;
+    text-align: center;
+}
+
+.hero-title {
+    font-family: 'Space Grotesk';
+    font-size: 3rem;
+    z-index: 2;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+}
+
+.floating-elements {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0.15; /* Makes them look like a subtle background */
+}
+
+/* DNA Animation */
+.dna {
+    position: absolute;
+    width: 100px;
+    top: 10%;
+    left: 15%;
+    color: var(--accent);
+    animation: rotateDNA 10s linear infinite;
+}
+
+/* Microscope Animation */
+.microscope {
+    position: absolute;
+    width: 80px;
+    bottom: 20%;
+    right: 15%;
+    color: var(--accent);
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes rotateDNA {
+    from { transform: rotate(0deg) translateY(0); }
+    to { transform: rotate(360deg) translateY(20px); }
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+    100% { transform: translateY(0px); }
+}
+
+/* Mobile Adjustments */
+@media (max-width: 600px) {
+    .hero-title { font-size: 2rem; }
+    .dna { width: 60px; }
+    .microscope { width: 50px; }
+}
+
+    </style>
+</head>
+<body>
+<div class="bio-hero">
+    <div class="floating-elements">
+        <svg class="dna" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M8 3c0 4.5 8 6.5 8 11s-8 6.5-8 11M16 3c0 4.5-8 6.5-8 11s8 6.5 8 11M8 6h8M8 10h8M8 14h8M8 18h8" />
+        </svg>
+        <svg class="microscope" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M6 18h8M10 18v3M8 21h4M10 5a4 4 0 0 1 4 4v7M18 16a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12zM10 9v4" />
+        </svg>
+    </div>
+    <h1 class="hero-title">Biology Bank</h1>
+    <p>Exploring the Blueprints of Life</p>
+</div>
+
+<header>
+    <a href="index.html" style="text-decoration: none; color: var(--primary); font-weight: bold;">&larr; Back</a>
+    <div style="width: 30px;"></div>
+</header>
+
+<section>
+    <div class="scenario-card">
+        <span class="category-tag">Botany</span>
+        <div class="scenario-text">
+            <p>During a field trip to a farm in Mpigi, MIST members noticed that crops in a waterlogged area were turning yellow and stunted compared to those on well-drained soil. A student suggested the plants were "suffocating."</p>
+        </div>
+        <div class="question-text">
+            (a) Explain scientifically why waterlogging leads to yellowing of leaves and poor growth. <br>
+            (b) Name the process in the roots that is inhibited by the lack of air spaces in the soil.
+        </div>
+        <button class="show-answer-btn" onclick="toggleAnswer(this)">View Solution</button>
+        <div class="answer-box">
+            <strong>Solution:</strong><br>
+            (a) Waterlogging displaces oxygen from soil air spaces. Without oxygen, root cells cannot perform aerobic respiration to produce energy for the active uptake of mineral salts (like nitrates). Lack of nitrates prevents chlorophyll formation, causing yellowing (chlorosis). <br>
+            (b) <strong>Aerobic Respiration</strong> and <strong>Active Transport</strong>.
+        </div>
+    </div>
+
+    <div class="scenario-card">
+        <span class="category-tag">Genetics</span>
+        <div class="scenario-text">
+            <p>In a village outreach program, a couple is concerned because they are both healthy, yet their first child was born with Sickle Cell Anemia. They want to know the chances of their second child having the same condition.</p>
+        </div>
+        <div class="question-text">
+            (a) Using appropriate genetic symbols, show the possible genotypes of their offspring. <br>
+            (b) What is the probability that the next child will be a carrier of the trait?
+        </div>
+        <button class="show-answer-btn" onclick="toggleAnswer(this)">View Solution</button>
+        <div class="answer-box">
+            <strong>Solution:</strong><br>
+            (a) Parents must be carriers (HbAS). <br>
+            Cross: AS x AS -> AA (Normal), AS (Carrier), AS (Carrier), SS (Sickle Cell). <br>
+            (b) The probability of being a carrier (AS) is <strong>50%</strong> (2 out of 4).
+        </div>
+    </div>
+
+    <div class="scenario-card">
+        <span class="category-tag">Physiology</span>
+        <div class="scenario-text">
+            <p>A student athlete at Mpigi High School participated in a 10km marathon on a hot afternoon. By the end of the race, she was sweating profusely and had passed very little, dark yellow urine.</p>
+        </div>
+        <div class="question-text">
+            (a) Explain the role of the hypothalamus and the kidney in correcting the athlete's water balance. <br>
+            (b) Name the hormone involved in this homeostatic process.
+        </div>
+        <button class="show-answer-btn" onclick="toggleAnswer(this)">View Solution</button>
+        <div class="answer-box">
+            <strong>Solution:</strong><br>
+            (a) The hypothalamus detects low water potential in the blood and signals the pituitary gland to release more ADH. This hormone makes the kidney tubules (nephrons) more permeable to water, increasing water reabsorption into the blood. <br>
+            (b) <strong>Antidiuretic Hormone (ADH)</strong> or Vasopressin.
+        </div>
+    </div>
+</section>
+
+<script>
+    function toggleAnswer(btn) {
+        const box = btn.nextElementSibling;
+        if (box.style.display === "block") {
+            box.style.display = "none";
+            btn.innerText = "View Solution";
+        } else {
+            box.style.display = "block";
+            btn.innerText = "Hide Solution";
+        }
+    }
+</script>
+
+</body>
+</html>

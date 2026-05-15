@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MIST | Mpigi Innovators</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #003366; 
+            --accent: #00d4ff;
+            --dark: #0a192f;
+            --light: #f4f7f6;
+            --white: #fff;
+            --whatsapp: #25D366;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--light); color: var(--dark); line-height: 1.6; }
+
+        header { 
+            background: var(--white); 
+            padding: 1rem 5%; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            position: sticky; 
+            top: 0; 
+            z-index: 1000; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .menu-icon { font-size: 1.8rem; cursor: pointer; color: var(--primary); }
+        header img { height: 60px; width: auto; } /* Adjusted logo height for better fit */
+
+        .side-nav {
+            height: 100%; width: 0; position: fixed; z-index: 2000;
+            top: 0; left: 0; background-color: var(--primary);
+            overflow-x: hidden; transition: 0.4s; padding-top: 60px;
+        }
+
+        .side-nav a { padding: 15px 32px; text-decoration: none; font-size: 1.2rem; color: white; display: block; }
+        .side-nav .close-btn { position: absolute; top: 10px; right: 25px; font-size: 2.5rem; }
+
+        section { padding: 40px 5%; max-width: 1100px; margin: auto; }
+        
+        #hero { 
+            background: linear-gradient(135deg, #003366, #00509d); 
+            color: white; 
+            text-align: center; 
+            padding: 80px 5%; 
+            border-radius: 0 0 50px 50px; 
+        }
+        #hero h2 { font-size: 2.5rem; margin-bottom: 10px; }
+        #hero p { font-size: 1.2rem; opacity: 0.9; margin-bottom: 25px; }
+
+        .cta-container { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
+        .btn-outline { padding: 12px 25px; border: 2px solid white; color: white; text-decoration: none; border-radius: 25px; font-weight: bold; }
+
+        .section-title { text-align: center; margin-bottom: 40px; color: var(--primary); }
+        
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+        .card { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .card h3 { color: var(--primary); margin-bottom: 15px; }
+
+        .table-container { overflow-x: auto; margin-top: 20px; }
+        table { width: 100%; border-collapse: collapse; background: white; border-radius: 10px; overflow: hidden; }
+        th, td { text-align: left; padding: 15px; border-bottom: 1px solid #eee; }
+        th { background: var(--primary); color: white; }
+
+        .content-wrapper { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 50px; }
+        .btn { padding: 12px 25px; background: var(--primary); color: white; border: none; border-radius: 25px; font-weight: bold; cursor: pointer; width: 100%; text-align: center; text-decoration: none; display: block; margin-bottom: 10px; }
+        .btn-wa { background: var(--whatsapp); }
+
+        footer { background: var(--dark); color: white; text-align: center; padding: 40px; margin-top: 50px; }
+        footer p { opacity: 0.8; font-size: 0.9rem; }
+    /* Style the dropdown button */
+.dropdown-btn {
+    padding: 15px 32px;
+    text-decoration: none;
+    font-size: 1.2rem;
+    color: white;
+    display: block;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    outline: none;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Add an active class to the button if needed */
+.dropdown-btn:hover {
+    color: var(--accent);
+}
+
+/* Dropdown container (hidden by default) */
+.dropdown-container {
+    display: none;
+    background-color: #002244; /* Slightly darker than primary for contrast */
+    padding-bottom: 10px;
+}
+
+/* Show the dropdown when targeted by JS */
+.show-dropdown {
+    display: block;
+}
+
+    </style>
+</head>
+<body>
+<div id="mySidenav" class="side-nav">
+    <a href="javascript:void(0)" class="close-btn" onclick="closeNav()">&times;</a>
+    <a href="#hero" onclick="closeNav()">Home</a>
+    <a href="#gateways" onclick="closeNav()">Gateways</a>
+    <a href="Project.html" onclick="closeNav()">Science Fair Ideas</a>
+    
+    <button class="dropdown-btn" onclick="toggleDropdown()">Scenario Bank ▾</button>
+    <div class="dropdown-container" id="scenarioDropdown">
+        <a href="view-scenarios.html" style="font-size: 1rem; padding-left: 50px;">Physics Bank</a>
+        <a href="Math.html" style="font-size: 1rem; padding-left: 50px;">Math Bank</a>
+        <a href="Chemistry.html" style="font-size: 1rem; padding-left: 50px;">Chemistry Bank</a>
+        <a href="Biology.html" style="font-size: 1rem; padding-left: 50px;">Biology Bank</a>
+        
+    </div>
+    <a href="Theme 2.html" style="font-size: 1rem; padding-left: 50px;">UNEB Project Ideas</a>
+    <a href="projectile.html">Ballistic Lab</a>
+    <a href="#donate" onclick="closeNav()">Support Us</a>
+</div>
+
+
+<header>
+    <div class="menu-icon" onclick="openNav()">&#9776;</div>
+    <a href="mist4.html">
+        <img src="logo.png" alt="MIST Logo"> 
+    </a>
+    <div style="width: 0px;"></div>
+</header>
+
+<section id="hero">
+    <h2>From Theory to Technology</h2>
+    <p>Uganda’s hub for high school innovators, competitive debaters, and future engineers.</p>
+    <div class="cta-container">
+        <a href="gallery.html" class="btn-outline">Explore Gallery</a>
+        <a href="paper.html" class="btn-outline">Access Papers</a>
+    </div>
+</section>
+
+<section id="about">
+    <h2 class="section-title">What We Do</h2>
+    <div class="grid">
+        <div class="card">
+            <h3>Academic Mastery</h3>
+            <p>Streamlined access to UNEB Papers to ensure every innovator has the foundation needed for Senior 4 and beyond.</p>
+        </div>
+        <div class="card">
+            <h3>The Scenario Bank</h3>
+            <p>A dedicated repository for high-stakes problem solving and industrial chemistry applications.</p>
+        </div>
+        <div class="card">
+            <h3>Innovators Lab</h3>
+            <p>Moving beyond textbooks to manufacture practical goods like industrial chalk and soap.</p>
+        </div>
+        <div class="card">
+            <h3>Competitive Edge</h3>
+            <p>Training ground for school debate tournaments, focusing on logic and technical defense.</p>
+        </div>
+    </div>
+</section>
+
+<section id="gateways">
+    <h2 class="section-title">The Digital Gateway</h2>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Resource</th>
+                    <th>Purpose</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Deposit Scenario</strong></td>
+                    <td>Submit new scientific challenges or project ideas.</td>
+                </tr>
+                <tr>
+                    <td><strong>Gallery of Science</strong></td>
+                    <td>View visual documentation of our current prototypes.</td>
+                </tr>
+                <tr>
+                    <td><strong>Scenario Bank</strong></td>
+                    <td>Browse curated solutions to complex scientific problems.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<section id="support">
+    <div class="content-wrapper">
+        <div id="contact">
+            <h2>Get in Touch</h2>
+            <p style="margin-bottom: 20px;">Join our network of Ugandan student leaders and tech enthusiasts.</p>
+            <a href="mailto:leadership@mist.ug?subject=Inquiry" class="btn">Send Email</a>
+            <a href="https://wa.me/256XXXXXXXXX" target="_blank" class="btn btn-wa">Chat on WhatsApp</a>
+        </div>
+
+        <div id="donate">
+            <h2>Support Innovation</h2>
+            <p style="margin-bottom: 15px; font-size: 0.9rem;">Contributions directly fund raw materials for science club projects.</p>
+            <input type="number" id="amount" placeholder="Amount (UGX)" style="width:100%; padding:12px; margin-bottom:15px; border-radius:8px; border:1px solid #ccc;">
+            <button class="btn" onclick="payFlutterwave()">Donate via Flutterwave</button>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <p>&copy; 2026 MIST | Mpigi, Uganda</p>
+    <p><em>Established to turn student curiosity into national infrastructure.</em></p>
+</footer>
+
+<script src="https://checkout.flutterwave.com/v3.js"></script>
+<script>
+    function openNav() { document.getElementById("mySidenav").style.width = "250px"; }
+    function closeNav() { document.getElementById("mySidenav").style.width = "0"; }
+    
+    function payFlutterwave(){
+        const amt = document.getElementById("amount").value || 5000;
+        FlutterwaveCheckout({
+            public_key: "YOUR_FLUTTERWAVE_KEY",
+            tx_ref: "MIST-" + Date.now(),
+            amount: amt,
+            currency: "UGX",
+            customer: { email: "donor@mist.ug", name: "MIST Supporter" }
+        });
+    }
+    function toggleDropdown() {
+    const dropdown = document.getElementById("scenarioDropdown");
+    dropdown.classList.toggle("show-dropdown");
+}
+
+// Update your closeNav function to also hide the dropdown if it's open
+function closeNav() { 
+    document.getElementById("mySidenav").style.width = "0"; 
+    document.getElementById("scenarioDropdown").classList.remove("show-dropdown");
+}
+
+</script>
+</body>
+</html>

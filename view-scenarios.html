@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Practice Scenarios | MIST</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #003366; 
+            --accent: #00d4ff;
+            --dark: #0a192f;
+            --light: #f4f7f6;
+            --white: #fff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--light); color: var(--dark); line-height: 1.6; }
+
+        header { 
+            background: var(--white); 
+            padding: 1rem 5%; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            position: sticky; 
+            top: 0; 
+            z-index: 1000; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        section { padding: 40px 5%; max-width: 1000px; margin: auto; }
+
+        .filter-nav { margin-bottom: 30px; display: flex; gap: 10px; flex-wrap: wrap; }
+        .filter-btn { 
+            padding: 8px 20px; 
+            border-radius: 20px; 
+            border: 1px solid var(--primary); 
+            background: transparent; 
+            color: var(--primary); 
+            cursor: pointer; 
+            font-weight: 600;
+        }
+        .filter-btn.active { background: var(--primary); color: white; }
+
+        .scenario-card {
+            background: var(--white);
+            border-left: 5px solid var(--primary);
+            padding: 25px;
+            border-radius: 0 15px 15px 0;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .category-tag {
+            display: inline-block;
+            background: #e0f2fe;
+            color: var(--primary);
+            font-size: 0.75rem;
+            padding: 4px 12px;
+            border-radius: 12px;
+            text-transform: uppercase;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .scenario-text { font-style: italic; color: #444; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 15px; }
+        .question-text { font-weight: 600; font-size: 1.1rem; color: var(--dark); }
+
+        .show-answer-btn {
+            margin-top: 15px;
+            background: none;
+            border: 1px solid var(--accent);
+            color: var(--primary);
+            padding: 5px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .answer-box {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background: #f0fdf4;
+            border-radius: 8px;
+            border: 1px dashed #22c55e;
+        }
+    .physics-hero {
+    position: relative;
+    height: 350px;
+    background: linear-gradient(180deg, #020617 0%, #0a192f 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-align: center;
+    overflow: hidden;
+}
+
+.hero-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 3.5rem;
+    z-index: 2;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    text-shadow: 0 0 30px rgba(0, 212, 255, 0.5);
+}
+
+.physics-elements {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0.2;
+}
+
+.atom {
+    position: absolute;
+    width: 150px;
+    top: 10%;
+    left: 10%;
+    color: #00d4ff;
+    animation: pulse 4s ease-in-out infinite;
+}
+
+.rocket {
+    position: absolute;
+    width: 100px;
+    bottom: 10%;
+    right: 15%;
+    color: #00d4ff;
+    animation: rocketFloat 5s ease-in-out infinite;
+}
+
+.exhaust { 
+    animation: flicker 0.1s infinite; 
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.2; }
+    50% { transform: scale(1.1); opacity: 0.5; }
+}
+
+@keyframes rocketFloat {
+    0%, 100% { transform: translateY(0) rotate(-5deg); }
+    50% { transform: translateY(-30px) rotate(5deg); }
+}
+
+@keyframes flicker {
+    0% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+@media (max-width: 600px) {
+    .hero-title { font-size: 2.2rem; }
+    .atom { width: 80px; }
+    .rocket { width: 60px; }
+}
+
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="index.html" style="text-decoration: none; color: var(--primary); font-weight: bold;">&larr; Back</a>
+    <div style="width: 30px;"></div>
+</header>
+<div class="physics-hero">
+    <div class="physics-elements">
+        <svg class="atom" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+            <circle cx="12" cy="12" r="3" fill="currentColor"/>
+            <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(45 12 12)"/>
+            <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(-45 12 12)"/>
+        </svg>
+
+        <svg class="rocket" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M4.5 16.5c-1.5 1.5-1.5 3.5 0 5s3.5 1.5 5 0" />
+            <path d="M12 2C9 2 4 8 4 12v5c0 1 1 2 2 2h4c1 0 2-1 2-2v-5c0-4-5-10-8-10z" transform="rotate(45 12 12)"/>
+            <path class="exhaust" d="M9 19l-2 3M12 22l-1-4" stroke="#ff4500" stroke-width="2"/>
+        </svg>
+    </div>
+    <h1 class="hero-title">Physics Bank</h1>
+    <p>Mastering the Laws of the Universe</p>
+</div>
+    <section style="padding-bottom: 0;">
+    <div class="search-wrapper">
+        <input type="text" id="topicSearch" onkeyup="filterScenarios()" placeholder="Search topics (e.g. 'rocket', 'lens', 'circuit')..." 
+        style="width: 100%; padding: 15px; border-radius: 10px; border: 2px solid var(--primary); font-size: 1rem; outline: none; transition: border-color 0.3s;">
+    </div>
+</section>
+
+
+<section>
+    <div class="filter-nav">
+    </div>
+
+    		<div class="scenario-card">
+        <span class="category-tag">Physics</span>
+        <div class="scenario-text">
+            <p dir="auto">A construction mogul in Kampala just landed a massive government contract to clear land for a new trade center. There’s a catch: the deadline is tight, and he’s been ordered to work through the night to finish on time.</p><p dir="auto">His main road-clearing tractor isn't equipped for night work, so he has his mechanics rig up a new lighting system. They install two high-beam headlamps (H_1, H_2) so the driver can see the road, and four parking lamps (P_1, P_2, P_3, P_4) so the machine is visible to other workers.</p><p dir="auto">The mechanics hand him a wiring diagram with two switches, but they didn't explain how to use it. The mogul is a businessman, not an electrician—he’s staring at the drawing (with switches k_1 and k_2) and he's confused. He needs to know how to light up the whole site for a work shift, and how to keep just the parking lights on when the tractor is idling so he doesn't blind the rest of the crew or drain the battery.</p>
+            <img src="head.png" width="280" height="300"
+            <p dir="auto">While he's figuring out the lights, his engineers are arguing in the background. They want to swap the tractor's heavy diesel engine for a petrol one, claiming it'll be more reliable for quick starts in the middle of the night, and they need a way to make sure the drivers don't put the wrong fuel in the wrong machine.</p>
+        </div>
+        <div class="question-text">
+            
+        </div>
+        <button class="show-answer-btn" onclick="toggleAnswer(this)">View Solution</button>
+        <div class="answer-box">
+      morgan is CTO
+        </div>
+    </div>
+    
+    <section>
+    <div class="scenario-card">
+           <span class="category-tag">Physics</span>
+        <div class="scenario-text"> 
+    <p dir="auto">During the D.R.C rebel war the leader of the Ugandan Support Army(USA) he realized that the rebels had the advantage of surprise but he had no idea where they can be hiding and spotting them at the same time.</p><p dir="auto">The 1st Luitenant had an idea he what to build the device they could use but he was sniped down to death. He had pieces of broken plane parts and pieces of rectangular wood. But they saw the rebels.</p><p dir="auto">The soliders where chasing the rebels but the rebels crossed a valley before they reach and planted landmines all over their road and they couldn't pass them. But there was a bridge which when one tried to cross fell down and died so they where also confused how to cross.</p><p dir="auto">Task:</p><p dir="auto">(a) What device might the soilders do to spy on them and explain.</p><p dir="auto">(b) How will the soilder cross the bridge.</p>
+        </div>
+       <button class="show-answer-btn" onclick="toggleAnswer(this)">View Solution</button>
+        <div class="answer-box">
+            <strong>Checklist:</strong><br>
+            <br>
+            .<br>
+          
+    </div>
+</section>
+
+    <div class="scenario-card">
+        <span class="category-tag">Physics</span>
+        <div class="scenario-text">
+            <p dir="auto">At a Kalangala fishing ground, there was a terrible storm. The wind blew down trees and a hailstorm covered the water. Residents said there were no more fish, but surprisingly the fish were alive but lived near the bottom.</p><p dir="auto">To increase fishing productivity, the government installed a wheel and axle system on boats to catch fish from deeper waters. The requirements for the machine are:</p><p dir="auto">Velocity Ratio (V.R.): Above 3</p><p dir="auto">Mechanical Advantage (M.A.): 3</p><p dir="auto">Efficiency (\eta): Above 74.9%</p><p dir="auto">Machine Data from Diagram:</p><p dir="auto">Radius of the Wheel (R) = 40cm</p><p dir="auto">Radius of the Axle (r) = 10cm</p><p dir="auto">Effort (E) applied = 300N</p><p dir="auto">Load (L) lifted = 900N</p><p dir="auto"></p>
+        </div>
+        <img src="wheel.png" alt= wheel-and-axle width="280" height="300">
+
+        <div class="question-text">
+            (a. Explain why the fish didn't die<br>
+            (b. Evaluate th machine quality
+        </div>
+        <button class="show-answer-btn" onclick="toggleAnswer(this)">View Solution</button>
+        <div class="answer-box">
+            <strong>Checklist:</strong><br>
+            - Power supply to the relay module.<br>
+            - Digital pin output from Arduino (use a Multimeter).<br>
+            - Ground connection continuity.
+        </div>
+    </div>
+</section>
+    
+    <section>
+    		<div class="scenario-card">
+        <span class="category-tag">Physics</span>
+        <div class="scenario-text">
+            
+             <div class="question-text">
+                 <p dir="auto"></p><p dir="auto"> </p><p dir="auto">A company has sold a new security light. Your neighbour had one. The electrician installed the circuit in the parallel system to help Lamp C. </p><p dir="auto"> </p><p dir="auto"> </p><p dir="auto">He looked at the circuit diagram but was confused about the function of the ammeter, and he was told that the rectangular things are resistors which stop a certain amount of electricity passing through the circuit. The batteries are rated 3.0 V each. </p><p dir="auto"> </p><p dir="auto">When he was going to work the next day he had a fatal accident and he was taken to hospital where to get an analysis on his skeletal framework by a when he saw a picture of his bone he was unsure of how the doctor acquired such an inter-structure picture.
+  <img src="circuit.png" alt= wheel-and-axle width="280" height="300"                 </p><p dir="auto"> </p><p dir="auto">Task:   </p><p dir="auto">As his neighbour:   </p><p dir="auto">(a) Help him know how much resistance do the resistors resist before going to the lamp A, lamp B, Lamp C.   </p><p dir="auto">(b) Explain how they could get a picture of his skeletal framework.</p>
+                
+            
+        </div>
+        <button class="show-answer-btn" onclick="toggleAnswer(this)">View Solution</button>
+        <div class="answer-box">
+      
+        </div>
+    </div>
+    
+        </section>
+        
+        <section>
+    		<div class="scenario-card">
+        <span class="category-tag">Physics</span>
+        <div class="scenario-text">
+            
+             <div class="question-text">
+            <p dir="auto"></p><p dir="auto">--- </p><p dir="auto"> </p><p dir="auto">A new company called agrisera has been built in the district. It processes edible agro produce for the residents at affordable prices. But it has received health complaints of people discovering insects, lice and tiny bugs in the product. The CEO called his employees to inspect. Some ones said that there are bugs under the awkward places. But there was a way of finding out because these flashlights could not reach. </p><p dir="auto"> </p><p dir="auto">While transporting agri products on foot for door-to-door service, two delivery men carried a food tray to a place 25 cm away from the man A and is 75 cm away from B. When they were done, the boss asked how did they remember, so he can increase their pay. The whole round food and dishes they all complained.  </p><p dir="auto"> </p><p dir="auto">*Hint: (Weight of tray was 50N</p><p dir="auto"> </p><p dir="auto">Task:   </p><p dir="auto">As a student of physics:   </p><p dir="auto">(a) Help the company to find a device they can use to inspect awkward places.   </p><p dir="auto">(b) Help the delivery men work out the agreement by finding what the lifted more weight</p>
+        </div>
+        <button class="show-answer-btn" onclick="toggleAnswer(this)">View Solution</button>
+        <div class="answer-box">
+      
+        </div>
+    </div>
+    
+        </section>
+            
+            <section>
+    		<div class="scenario-card">
+        <span class="category-tag">Physics</span>
+        <div class="scenario-text">
+            
+             <div class="question-text">
+                 <p dir="auto">To increase convey speed and productivity of products, a gear system has been installed which consists of gear wheels S and s with 80 and 20 teeth respectively. The gears are fastened together on axles of equal diameter.</p><p dir="auto">The manager of the company suggested they should test the machine system. An effort of 150 N was attached to a string wound around one axle, which raised a load of 450 N attached to another string wound around the other axle.</p><p dir="auto">Support Material</p><p dir="auto">The engineer stated that to increase convey speed, the Velocity Ratio (V.R.) should be above 5 and its efficiency should be above 75.5%.</p>
+                 <img src="gears.png" width="280" height="300"
+                 <p dir="auto">There was a shortage of water in the company and they need a lift pump to help them pump water from the underground, but did not know how its structure looked like, let alone its mode of action.</p><p dir="auto">Task</p><p dir="auto">(a) Help the company know if the machine is ready to start conveying.</p><p dir="auto">(b) Explain the structure and mode of action of a lift pump</p>
+            
+        </div>
+        <button class="show-answer-btn" onclick="toggleAnswer(this)">View Solution</button>
+        <div class="answer-box">
+      
+        </div>
+    </div>
+    
+        </section>
+                
+                <section>
+    		<div class="scenario-card">
+        <span class="category-tag">Physics</span>
+        <div class="scenario-text">
+            
+             <div class="question-text">
+                 <p dir="auto">Lion Motorbikes has just received numerous complaints regarding rising fuel prices. Consequently, the owner, Morgan, instructed the workers to install a system where all the lights are connected to a rechargeable solar power battery on the motorcycles. The workers composed the circuit diagram below to visualize the integration.</p><p dir="auto">While testing the engine temperature during full-speed operation, the markings on the workers' thermometer faded. They were unable to source a replacement and currently do not know how to recalibrate the existing one.</p><p dir="auto">Task</p><p dir="auto">(a) Explain to the workers how the circuit works.</p><p dir="auto">(b) How to recalibrate the thermometer.</p>
+            
+        </div>
+        <button class="show-answer-btn" onclick="toggleAnswer(this)">View Solution</button>
+        <div class="answer-box">
+      
+        </div>
+    </div>
+    
+        </section>
+                    
+                    <section>
+                        <div class="scenario-card">
+        <span class="category-tag">Physics</span>
+        <div class="scenario-text">
+           
+             <div class="question-text">           
+       <p dir="auto">A food delivery company had an urgent call from a nearby Red Cross service and was given directions. On their way, they moved at a uniform speed of 8 m/s for 5 seconds, then accelerated to 14 m/s in 3 seconds. They then retarded (decelerated) in some traffic jam to 2 m/s in 4 seconds, after which they accelerated to 20 m/s in 3 seconds. Finally, they stayed at a constant speed for 5 seconds, before retarding to 0 m/s in 5 seconds.</p><p dir="auto">Upon reaching their destination, they were paid for the food but did not know how much they should be paid for transport based on the distance covered.</p><p dir="auto">Task</p><p dir="auto">As a student of physics, determine the distance they covered.</p>
+            
+        </div>
+        <button class="show-answer-btn" onclick="toggleAnswer(this)">View Solution</button>
+        <div class="answer-box">
+      
+        </div>
+    </div>
+    
+        </section>
+                
+                
+                <section>
+    		<div class="scenario-card">
+        <span class="category-tag">Physics</span>
+        <div class="scenario-text">
+            
+             <div class="question-text">
+            <p dir="auto">Your friend has just bought a new lens camera to take to this year's science trip, but on testing it out, he discovered that the lens in the camera was not powerful enough. So he went to the Hard Lens Lane and was told that the lens he had was a low-power lens. He was also told by the attendant that his lens has a focal length of 15 meters.</p><p dir="auto">The doctor gave him a little advice, telling him that for a lens of your friend's desired quality, he must attach a similar lens so that the power of combination is above 116.7 Dioptres to meet his needs. However, he did not know how to find the focal length of the second lens he needed.</p><p dir="auto">Task</p><p dir="auto">Help your friend find the desired focal length of the new lens he has to combine with his lens.</p>
+        </div>
+        <button class="show-answer-btn" onclick="toggleAnswer(this)">View Solution</button>
+        <div class="answer-box">
+      
+        </div>
+    </div>
+    
+        </section>
+                    
+                <section>
+    		<div class="scenario-card">
+        <span class="category-tag">Physics</span>
+        <div class="scenario-text">
+            
+             <div class="question-text">
+           <p dir="auto">Morgan was a night-shift lorry driver driving through the night in his shaky lorry. He reached into his pocket to light a cigarette and observed the rough part of his matchbox was missing, so it could not light. Suddenly, he did not expect the tree in front of him. He applied the brakes, but the wheels stopped and the lorry skidded on the slippery road. He crashed into the tree but, fortunately, did not sustain any injuries.</p><p dir="auto">The next day, after returning from the hospital, he changed the tires on his truck and was moved to the day shift. It was a hot day, and as he was driving, his tires suddenly exploded. He is now facing the risk of being fired and needs a scientific explanation for his boss.</p><p dir="auto">Task</p><p dir="auto">Help Morgan to explain:</p><p dir="auto">(a) (i) Why the tires did not stop the lorry even though he applied the brakes.</p></p><p dir="auto">(ii) Why his matchbox did not light when struck.</p><p dir="auto">(b) Using kinetic theory, why his tires exploded.</p> 
+        </div>
+        <button class="show-answer-btn" onclick="toggleAnswer(this)">View Solution</button>
+        <div class="answer-box">
+      
+        </div>
+    </div>
+    
+        </section>
+                    
+                <section>
+    		<div class="scenario-card">
+        <span class="category-tag">Physics</span>
+        <div class="scenario-text">
+            
+             <div class="question-text">
+          <p dir="auto">During a science trip at your school, you went to a dam and noticed the bottom of the dam was larger than the top of it. The trip guide told them there was a reason, but none of them believed they knew why. On the way back, they passed another dam in construction and surveyed the construction site. They saw a crane with a metallic wire string to support weight. They were told the wire had a cross-sectional area of 10\text{ cm}^2, which increased in length from 20\text{ m} to 25\text{ m} when a force of 500\text{ N} was applied. After they left, they realized they had forgotten to ask about the tensile stress, tensile strain, and Young's modulus, and didn't know how to find them.</p><p dir="auto">Task</p><p dir="auto">Help the students know why the dam was thicker on the bottom than on top.</p><p dir="auto">Find the tensile stress, tensile strain, and Young's modulus of the metallic wire string on the crane.</p>  
+        </div>
+        <button class="show-answer-btn" onclick="toggleAnswer(this)">View Solution</button>
+        <div class="answer-box">
+      
+        </div>
+    </div>
+    
+        </section>
+                    
+                    
+                <section>
+    		<div class="scenario-card">
+        <span class="category-tag">Physics</span>
+        <div class="scenario-text">
+            
+             <div class="question-text">
+          <p dir="auto">A construction worker was working on a building close to a bridge and noticed that the bridge had rollers at one end. He also observed that the bridge structure contained various triangular shapes with unusual names called ties and struts. He was told these components were helpful for many reasons, but he could not remember how to identify or differentiate between them.</p><p dir="auto">Task</p><p dir="auto">As a student of physics, help the construction worker:</p><p dir="auto">(a) To know the importance of the rollers.</p><p dir="auto">(b) Define and identify all possible ties and struts.</p>  
+        </div>
+        <button class="show-answer-btn" onclick="toggleAnswer(this)">View Solution</button>
+        <div class="answer-box">
+      
+        </div>
+    </div>
+    
+        </section>
+                    
+                    
+                <section>
+    		<div class="scenario-card">
+        <span class="category-tag">Physics</span>
+        <div class="scenario-text">
+            
+             <div class="question-text">
+            <p dir="auto">The Government of Uganda has started a new nuclear energy program in your home village. However, the residents do not see the use of nuclear energy since they could barely afford normal electric energy. The government wants the villagers to be enticed by the idea of an atomic energy plant in different sectors of real life.</p><p dir="auto">Task</p><p dir="auto">As the village spokesperson:</p><p dir="auto">(a) Help the village know the importance of nuclear energy in at least 5 sectors of real life.</p>
+        </div>
+        <button class="show-answer-btn" onclick="toggleAnswer(this)">View Solution</button>
+        <div class="answer-box">
+      
+        </div>
+    </div>
+    
+        </section>
+                    
+                    
+                <section>
+    		<div class="scenario-card">
+        <span class="category-tag">Physics</span>
+        <div class="scenario-text">
+            
+             <div class="question-text">
+                 <p dir="auto">A cleaner was cleaning the upstairs of a 3-story building. He was of mass 78kg. When he finished up with the middle floor he went up but he felt lighter as if he could fly but he couldn’t. When he was done with the floor he went down hoping to feel the sensation of being light but instead he felt heavier and he went to his cleaner friend to explain but he too was confused.</p><p dir="auto">Hint: The lift was going at an acceleration of 2\text{ m/s}^2.</p><p dir="auto">Task</p><p dir="auto">Help the cleaner basing on mathematical evidence why he felt heavier going down and lighter going up.</p>
+            
+        </div>
+        <button class="show-answer-btn" onclick="toggleAnswer(this)">View Solution</button>
+        <div class="answer-box">
+      
+        </div>
+    </div>
+    
+        </section>
+                    
+                <section>
+    		<div class="scenario-card">
+        <span class="category-tag">Physics</span>
+        <div class="scenario-text">
+            
+             <div class="question-text">
+                 <p dir="auto">A driver had just got his license and [was] driving on a hot day on a road where he saw a pool of water. He was thirsty on a hot day so he drove ahead so he could get a sip of water but even with the continuous driving he could not reach it. He later realized it wasn't real so he gave up and went to a nearby shop, bought some water and explained what he had just seen.</p><p dir="auto">Task</p><p dir="auto">As the shopkeeper, explain to the driver how he was able to see a pool of water.</p>
+            
+        </div>
+        <button class="show-answer-btn" onclick="toggleAnswer(this)">View Solution</button>
+        <div class="answer-box">
+      
+        </div>
+    </div>
+    
+        </section>
+                <section>
+    		<div class="scenario-card">
+        <span class="category-tag">Physics</span>
+        <div class="scenario-text">
+            
+             <div class="question-text">
+                 <p dir="auto">The sky was just starting to drizzle with a little bit of sunlight and your brother starts to doze off. When he wakes up he sees a beautiful pattern of colours which you told him was a rainbow, but he thought it was a dream.</p><p dir="auto">Task</p><p dir="auto">Explain to your brother that is not a dream.</p>
+            
+        </div>
+        <button class="show-answer-btn" onclick="toggleAnswer(this)">View Solution</button>
+        <div class="answer-box">
+      
+        </div>
+    </div>
+    
+        </section>
+                <section>
+    		<div class="scenario-card">
+        <span class="category-tag">Physics</span>
+        <div class="scenario-text">
+            
+             <div class="question-text">
+                 <p dir="auto">During the construction of a hospital health center in your village, they wanted to build water tanks and roofing trusses but did not know why the engineer preferred using the triangular structure.</p><p dir="auto">They wanted the tensile stress of the iron sheets of the roofing truss to not exceed 1.8 \times 10^7Nm^-2. The iron sheets they had are 200kg in mass and have a cross-sectional area of 20meters. Will the tank of mass 500kg and 10meters [be supported]?</p><p dir="auto">Support material:
+                     <img src="Tank.png" width="280" height="300"           </p><p dir="auto">An inspector was inspecting the building and was surprised to see a light with no switch to turn it on, so he called you to explain to him.</p><p dir="auto">Support material
+                     <img src="LED.png" width="280" height="300"
+                 </p><p dir="auto">Task</p><p dir="auto">(a) Explain why the engineer preferred to use the triangular structures.</p><p dir="auto">(b) Help the constructors know if the iron sheets and tank are in proper condition.</p><p dir="auto">(c) Elaborate to the inspector how the light works.</p>
+            
+        </div>
+        <button class="show-answer-btn" onclick="toggleAnswer(this)">View Solution</button>
+        <div class="answer-box">
+      
+        </div>
+    </div>
+    
+        </section>
+                <section>
+    		<div class="scenario-card">
+        <span class="category-tag">Physics</span>
+        <div class="scenario-text">
+            <p dir="auto">The government of Uganda has built a bridge from Kalangala islands to connect to the mainland. Mr. Martin was driving his truck and was stopped 50metres from the start of the bridge at an inspection point to see if his car meets qualifications to cross the bridge which were:</p><p dir="auto">The car's weight did not have to exceed half the bridge's weight.</p><p dir="auto">The force exerted by the car on B did not have to exceed 200kN.</p><p dir="auto">The tension caused by the car did not have to be beyond 100kN</p><p dir="auto">If the car did not meet at least 2 of the qualifications, it will not be allowed to pass.</p><p dir="auto">Task</p><p dir="auto">Help Mr. Martin know if his car will be allowed to cross the bridge (basing on calculations).</p>
+             <div class="question-text">
+            
+        </div>
+        <button class="show-answer-btn" onclick="toggleAnswer(this)">View Solution</button>
+        <div class="answer-box">
+      
+        </div>
+    </div>
+    
+        </section>
+                <section>
+    		<div class="scenario-card">
+        <span class="category-tag">Physics</span>
+        <div class="scenario-text">
+            <p dir="auto">There are complaints about a person who sold a plot of land to another person. The one who sold claimed that he sold the buyer exactly 500m of land but when they asked the buyer, he said that the tape measure had its own problems.</p><p dir="auto">A road is being built in your area but all the houses near the road construction site are to be demolished. Your friend Ssenyondo has his house near the roadside, so he gets two pieces of wood and claps them together, and another sound is heard 0.8seconds later.</p><p dir="auto">(Hint: The speed of sound in air is 320ms^-1. The government will demolish properties below 100m from the road.)</p><p dir="auto">Task</p><p dir="auto">(a) Find out if the metallic tape measure elongated Temp = 5°C.</p><p dir="auto">(b) Find if Ssenyondo's house will be demolished.</p>
+             <div class="question-text">
+            
+        </div>
+        <button class="show-answer-btn" onclick="toggleAnswer(this)">View Solution</button>
+        <div class="answer-box">
+      
+        </div>
+    </div>
+    
+        </section>
+                <section>
+    		<div class="scenario-card">
+        <span class="category-tag">Physics</span>
+        <div class="scenario-text">
+            <p dir="auto">John was sailing on the waters of Lake Victoria to get some fish on his metal boat using a net when he drives through the lake and hoists his catchings using a pulley.</p><p dir="auto">He wanted to increase its velocity ratio to 10 but did not even know its original V.R. After he was done fishing he saw that the boat was sinking slowly by slowly and he hadn't a clue why. He realized a sudden need for a new boat. For a density 530kgm^3, he only had the following materials: 2000kg of timber has density 550kgm^3, Aluminum has volume 4.5m^3.</p><p dir="auto">Task</p><p dir="auto">(a) Help John increase the velocity ratio of his pulley (diagram).</p><p dir="auto">(b) What advice with explanation would you give John on how to make the boat?</p>
+             <div class="question-text">
+            
+        </div>
+        <button class="show-answer-btn" onclick="toggleAnswer(this)">View Solution</button>
+        <div class="answer-box">
+      
+        </div>
+    </div>
+    
+        </section>
+                <section>
+    		<div class="scenario-card">
+        <span class="category-tag">Physics</span>
+        <div class="scenario-text">
+            <p dir="auto">A businessman who owns the Moon Bean in Kampala has been confused about the money he pays for the business's electric consumption, so he tabulated the results as below:<img src="elec-Table.png" alt= Table width="280" height="300"                 >;</p><p dir="auto">He was also looking through his phone's Google Maps app and could see his shop on the screen but he had never advertised it; he was perplexed.</p><p dir="auto">Task:</p><p dir="auto">(a) Help the businessman to find his monthly electrical expenditure. (Hint: The rate for 1 unit = 200UGX).</p><p dir="auto">(b) Edify how the Google Maps system works.</p>
+             <div class="question-text">
+            
+        </div>
+        <button class="show-answer-btn" onclick="toggleAnswer(this)">View Solution</button>
+        <div class="answer-box">
+      
+        </div>
+    </div>
+    
+        </section>
+                <section>
+    		<div class="scenario-card">
+        <span class="category-tag">Physics</span>
+        <div class="scenario-text">
+            <p dir="auto">Uganda has opened up a space program called the Uganda AeroSpace Program to explore outer space, but due to the low information level of workers who are educated about it, it has been delayed. The Chief Technological Officer (CTO) of the program has collaborated with a neighboring country’s program. After brainstorming, they decided to make side-by-side boosters reusable so as to [save] funds. But they had no idea about how to attach the boosters for reusability.</p><p dir="auto">Task</p><p dir="auto">As the Assistant CTO, help them to:</p><p dir="auto">(a) Educate the workers on how a rocket works.</p><p dir="auto">(b) Explain a device that can attach the booster rockets.</p>
+             <div class="question-text">
+            
+        </div>
+        <button class="show-answer-btn" onclick="toggleAnswer(this)">View Solution</button>
+        <div class="answer-box">
+      
+        </div>
+    </div>
+    
+        </section>
+                <section>
+    		<div class="scenario-card">
+        <span class="category-tag">Electrostatics</span>
+        <div class="scenario-text">
+            In a village near a tree forest, the houses and cattle are constantly being struck by lightning and die on the spot. A few days ago, during a thunderstorm, a villager decided to hide under a tree but was found burnt the next day. The villagers all think that the lightning is witchcraft and resort to consulting the Witch Doctor (N.D.), but have received no reply.
+​Task:
+As a physics learner, help the villagers understand the causes, dangers, and precautions against lightning.
+             <div class="question-text">
+            
+        </div>
+        <button class="show-answer-btn" onclick="toggleAnswer(this)">View Solution</button>
+        <div class="answer-box">
+      
+        </div>
+    </div>
+    
+        </section>
+                <section>
+    		<div class="scenario-card">
+        <span class="category-tag">Waves</span>
+        <div class="scenario-text">
+            At a science fair presentation, you are given a glass tube which is open at the top and held vertically. In the experiment, you have to fill it with water. You use a tuning fork vibrating at 254 \text{ Hz} held above the tube, and water is allowed to flow out slowly. The first resonance occurs when the water level is 31.5 \text{ cm} from the top, while the second occurs when the water level is 96.3 \text{ cm} from the top.
+​Task:
+​(a) Find the speed of sound in the air column.
+​(b) Find the end correction.
+​(c) State five dangers of resonance.
+             <div class="question-text">
+            
+        </div>
+        <button class="show-answer-btn" onclick="toggleAnswer(this)">View Solution</button>
+        <div class="answer-box">
+      
+        </div>
+    </div>
+    
+        </section>
+                <section>
+    		<div class="scenario-card">
+        <span class="category-tag">linear expansivity</span>
+        <div class="scenario-text">
+            ​A brand new railway has just been constructed in your village, but inspectors say it is not safe. However, the engineers say it is safe. The railroad didn't have gaps between the rails because the engineers said they were negligible. Yet, the 3\text{ km} railway expands with a linear expansivity of 1.1 \times 10^{-5} \text{ K}^{-1}. One day, the external temperature rose by 15^\circ\text{C}.
+​Task:
+​(a) Explain the importance of leaving gaps in the rails.
+​(b) How much will the railway expand?
+             <div class="question-text">
+            
+        </div>
+        <button class="show-answer-btn" onclick="toggleAnswer(this)">View Solution</button>
+        <div class="answer-box">
+      
+        </div>
+    </div>
+    
+        </section>
+                <section>
+    		<div class="scenario-card">
+        <span class="category-tag">Heat and linear motion</span>
+        <div class="scenario-text">
+            During your yearly trip to your village, the taxi driver was driving at a high speed when he was suddenly stopped by traffic police. When the taxi stopped, the passengers kept moving forward and the driver even hit his head on the front window and fainted.
+​The police rushed him to the hospital, and since he was your uncle, you came along. At the hospital, there was only a new nurse on shift, and she found that all the thermometers were not marked. She had no way of knowing the driver's temperature. They had a hypsometer in the store room.
+​Task:
+​(a) Explain why the passengers didn't stop immediately.
+​(b) How will the nurse determine the driver's temperature?
+             <div class="question-text">
+            
+        </div>
+        <button class="show-answer-btn" onclick="toggleAnswer(this)">View Solution</button>
+        <div class="answer-box">
+      
+        </div>
+    </div>
+    
+        </section>
+                <section>
+    		<div class="scenario-card">
+        <span class="category-tag">Physics</span>
+        <div class="scenario-text">
+            ​A businessman who owns a helicopter assembly plant had been testing out a new helicopter model called the M-H-3. He went into the M-H-3 to test fly it. He first moved at a velocity of 180 \text{ m/s} up, then he moved horizontally at 120 \text{ m/s}. He said if the resultant velocity did not reach 245.7 \text{ m/s}, the M-H-3 is out of the 1st-class standard.
+​To increase flying speed, the workers at the assembly plant removed the old motor of the helicopter's spinning blade and put in a new electric motor where the power output is 30,000 \text{ W} for 1 hour. The workers also concluded that if the motor consumes 1.44 \times 10^8 \text{ J} of electricity, they wanted to find the efficiency of the motor. The Chief Tech Officer said if the efficiency did not go beyond 75.49\%, it would be removed. The workers did not know how to find it.
+​Task:
+​(a) Help the businessman know if the helicopter reaches the 1st-class standard.
+​(b) Help the workers know if they have to replace the helicopter's motor.
+             <div class="question-text">
+            
+        </div>
+        <button class="show-answer-btn" onclick="toggleAnswer(this)">View Solution</button>
+        <div class="answer-box">
+      
+        </div>
+    </div>
+    
+        </section>
+                <section>
+    		<div class="scenario-card">
+        <span class="category-tag">Physics</span>
+        <div class="scenario-text">
+            Alex has just started a mechanic shop along the roadside to fix damaged cars. A problem arose when a car with a broken engine had to be pulled into the shop, but the entrance was high up. One of the workers swiftly placed an inclined board about 30 \text{ m} long. Other workers helped pull the car, which weighed 5 \text{ tonnes}, into the shop. Alex wants to know how much work was done.
+​A worker named James instantly removed the inclined plane, but he did it too soon, and the car plummeted 40 \text{ m} down and was destroyed. The owner tells Alex that the price of the car is four times the potential energy lost plus the velocity it hit the ground with.
+​Task:
+​(a) Calculate the work done by the workers.
+​(b) Calculate the amount of money Alex has to pay the owner.
+​(c) State whether he should congratulate the workers.
+             <div class="question-text">
+            
+        </div>
+        <button class="show-answer-btn" onclick="toggleAnswer(this)">View Solution</button>
+        <div class="answer-box">
+      
+        </div>
+    </div>
+    
+        </section>
+                <section>
+    		<div class="scenario-card">
+        <span class="category-tag">Physics</span>
+        <div class="scenario-text">
+            James constructed an FM radio station called FM-Fan broadcasting at 101.3 \text{ MHz}. A movie star asked what the wavelength was. He also asked why sound can be heard more clearly at night than during the day.
+             <div class="question-text">
+            
+        </div>
+        <button class="show-answer-btn" onclick="toggleAnswer(this)">View Solution</button>
+        <div class="answer-box">
+      
+        </div>
+    </div>
+    
+        </section>
+                <section>
+    		<div class="scenario-card">
+        <span class="category-tag">Physics</span>
+        <div class="scenario-text">
+            Akram had a bulb installed rated 250 \text{ W}. He also bought a brand new refrigerator to keep items cool but doesn't know how it works.
+Task: * (a) Determine the electric energy consumed (requires a time value, typically 1 hour if not stated).
+​(b) Explain how a refrigerator works.
+             <div class="question-text">
+            
+        </div>
+        <button class="show-answer-btn" onclick="toggleAnswer(this)">View Solution</button>
+        <div class="answer-box">
+      
+        </div>
+    </div>
+    
+        </section>
+                <section>
+    		<div class="scenario-card">
+        <span class="category-tag">Physics</span>
+        <div class="scenario-text">
+            
+             <div class="question-text">
+            
+        </div>
+        <button class="show-answer-btn" onclick="toggleAnswer(this)">View Solution</button>
+        <div class="answer-box">
+      
+        </div>
+    </div>
+    
+        </section>
+                <section>
+    		<div class="scenario-card">
+        <span class="category-tag">Physics</span>
+        <div class="scenario-text">
+            
+             <div class="question-text">
+            
+        </div>
+        <button class="show-answer-btn" onclick="toggleAnswer(this)">View Solution</button>
+        <div class="answer-box">
+      
+        </div>
+    </div>
+    
+        </section>
+                <section>
+    		<div class="scenario-card">
+        <span class="category-tag">Physics</span>
+        <div class="scenario-text">
+            
+             <div class="question-text">
+            
+        </div>
+        <button class="show-answer-btn" onclick="toggleAnswer(this)">View Solution</button>
+        <div class="answer-box">
+      
+        </div>
+    </div>
+    
+        </section>
+                <section>
+    		<div class="scenario-card">
+        <span class="category-tag">Physics</span>
+        <div class="scenario-text">
+            
+             <div class="question-text">
+            
+        </div>
+        <button class="show-answer-btn" onclick="toggleAnswer(this)">View Solution</button>
+        <div class="answer-box">
+      
+        </div>
+    </div>
+    
+        </section>
+                <section>
+    		<div class="scenario-card">
+        <span class="category-tag">Physics</span>
+        <div class="scenario-text">
+            
+             <div class="question-text">
+            
+        </div>
+        <button class="show-answer-btn" onclick="toggleAnswer(this)">View Solution</button>
+        <div class="answer-box">
+      
+        </div>
+    </div>
+    
+        </section>
+                <section>
+    		<div class="scenario-card">
+        <span class="category-tag">Physics</span>
+        <div class="scenario-text">
+            
+             <div class="question-text">
+            
+        </div>
+        <button class="show-answer-btn" onclick="toggleAnswer(this)">View Solution</button>
+        <div class="answer-box">
+      
+        </div>
+    </div>
+    
+        </section>
+                <section>
+    		<div class="scenario-card">
+        <span class="category-tag">Physics</span>
+        <div class="scenario-text">
+            
+             <div class="question-text">
+            
+        </div>
+        <button class="show-answer-btn" onclick="toggleAnswer(this)">View Solution</button>
+        <div class="answer-box">
+      
+        </div>
+    </div>
+    
+        </section>
+                <section>
+    		<div class="scenario-card">
+        <span class="category-tag">Physics</span>
+        <div class="scenario-text">
+            
+             <div class="question-text">
+            
+        </div>
+        <button class="show-answer-btn" onclick="toggleAnswer(this)">View Solution</button>
+        <div class="answer-box">
+      
+        </div>
+    </div>
+    
+        </section>
+                <section>
+    		<div class="scenario-card">
+        <span class="category-tag">Physics</span>
+        <div class="scenario-text">
+            
+             <div class="question-text">
+            
+        </div>
+        <button class="show-answer-btn" onclick="toggleAnswer(this)">View Solution</button>
+        <div class="answer-box">
+      
+        </div>
+    </div>
+    
+        </section>
+                <section>
+    		<div class="scenario-card">
+        <span class="category-tag">Physics</span>
+        <div class="scenario-text">
+            
+             <div class="question-text">
+            
+        </div>
+        <button class="show-answer-btn" onclick="toggleAnswer(this)">View Solution</button>
+        <div class="answer-box">
+      
+        </div>
+    </div>
+    
+        </section>
+
+<script>
+    function toggleAnswer(btn) {
+        const box = btn.nextElementSibling;
+        if (box.style.display === "block") {
+            box.style.display = "none";
+            btn.innerText = "View Solution";
+        } else {
+            box.style.display = "block";
+            btn.innerText = "Hide Solution";
+        }
+    }
+    <div id="scenariosList">Loading epic scenarios...</div>
+
+    async function loadScenarios() {
+        const container = document.getElementById('scenariosList');
+        try {
+            // This fetches the local file you created
+            const response = await fetch('scenarios.json');
+            const data = await response.json();
+            
+            container.innerHTML = ""; // Clear loader
+
+            data.forEach(item => {
+                container.innerHTML += `
+                    <div class="scenario-card">
+                        <span class="tag">${item.subject.toUpperCase()}</span>
+                        <p class="scenario-text">"${item.scenario}"</p>
+                        <p class="question-text">${item.question}</p>
+                        <button class="ans-btn" onclick="toggleAnswer(this)">View Solution</button>
+                        <div class="answer-box" style="display:none; margin-top:10px; padding:10px; background:#f0fdf4; border:1px dashed #22c55e;">
+                            <strong>Solution:</strong><br>${item.answer}
+                        </div>
+                    </div>
+                `;
+            });
+        } catch (error) {
+            container.innerHTML = "Error loading scenarios. Make sure scenarios.json exists.";
+            console.error("Fetch error:", error);
+        }
+    }
+
+    function toggleAnswer(btn) {
+        const box = btn.nextElementSibling;
+        box.style.display = (box.style.display === 'none') ? 'block' : 'none';
+        btn.innerText = (box.style.display === 'none') ? 'View Solution' : 'Hide Solution';
+    }
+
+    // Run on page load
+    loadScenarios();
+                    
+  function filterScenarios() {
+    // 1. Get the search input value
+    const input = document.getElementById('topicSearch');
+    const filter = input.value.toLowerCase();
+    
+    // 2. Target all scenario cards globally
+    const cards = document.querySelectorAll('.scenario-card');
+
+    // 3. Loop through every card and toggle visibility
+    cards.forEach(card => {
+        const content = card.textContent.toLowerCase();
+        
+        // If the text matches any part of the card, show it; else, hide it
+        if (content.includes(filter)) {
+            card.style.display = "block";
+        } else {
+      
+
+
+</script>
+
+</body>
+</html>

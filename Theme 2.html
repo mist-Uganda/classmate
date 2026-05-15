@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026 UNEB Themes | MIST</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #008080; /* Teal for Sustainability */
+            --dark: #0f172a;
+            --accent: #f0fdf4;
+            --gold: #f59e0b;
+            --light: #f8fafc;
+            --white: #fff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--light); color: var(--dark); line-height: 1.6; }
+
+        header { 
+            background: var(--white); 
+            padding: 1rem 5%; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            position: sticky; 
+            top: 0; 
+            z-index: 1000; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .container { padding: 40px 5%; max-width: 1100px; margin: auto; }
+
+        .theme-banner { 
+            background: linear-gradient(135deg, var(--dark) 0%, var(--primary) 100%); 
+            color: white; 
+            padding: 50px 30px; 
+            border-radius: 24px; 
+            text-align: center;
+            margin-bottom: 40px;
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+        }
+
+        .year-badge { 
+            display: inline-block;
+            background: var(--gold); 
+            color: var(--dark); 
+            padding: 5px 15px; 
+            border-radius: 50px; 
+            font-weight: 800; 
+            font-size: 0.8rem;
+            margin-bottom: 15px;
+        }
+
+        .current-theme-box {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+            font-size: 1.2rem;
+            font-weight: 500;
+            border-left: 5px solid var(--gold);
+        }
+
+        /* Subject Tabs */
+        .tab-wrapper { display: flex; gap: 10px; margin-bottom: 30px; overflow-x: auto; padding-bottom: 10px; }
+        .tab-btn {
+            padding: 12px 24px;
+            background: var(--white);
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            white-space: nowrap;
+            transition: 0.3s;
+        }
+        .tab-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+        .content-section { display: none; }
+        .content-section.active { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 25px; }
+
+        .idea-card {
+            background: var(--white);
+            border-radius: 18px;
+            padding: 30px;
+            border: 1px solid #f1f5f9;
+            transition: 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .idea-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+
+        .idea-card h4 { color: var(--primary); font-size: 1.3rem; margin-bottom: 10px; }
+        
+        .sustainability-tag {
+            font-size: 0.7rem;
+            color: var(--primary);
+            background: var(--accent);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 700;
+            align-self: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .method-box { 
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8fafc;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            border-top: 2px solid var(--gold);
+        }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="index.html" style="text-decoration: none; color: var(--dark); font-weight: bold;">&larr; Exit Hub</a>
+    <h3 style="font-family: 'Space Grotesk';">MIST x UNEB</h3>
+    <div style="width: 30px;"></div>
+</header>
+
+<div class="container">
+    <div class="theme-banner">
+        <span class="year-badge">S3 & S4 CYCLE 2026/27</span>
+        <h1 style="font-family: 'Space Grotesk';">Competency Project Hub</h1>
+        <div class="current-theme-box">
+            "Embracing Creativity and Practical Skills for Sustainable Development of Society"
+        </div>
+    </div>
+
+    <div class="tab-wrapper">
+        <button class="tab-btn active" onclick="openCat(event, 'env')">Environment & Energy</button>
+        <button class="tab-btn" onclick="openCat(event, 'health')">Health & Science</button>
+        <button class="tab-btn" onclick="openCat(event, 'agri')">Smart Agriculture</button>
+        <button class="tab-btn" onclick="openCat(event, 'digital')">Digital & Coding</button>
+    </div>
+
+    <div id="env" class="content-section active">
+        <div class="idea-card">
+            <span class="sustainability-tag">RENEWABLE ENERGY</span>
+            <h4>Bio-Waste Briquette Press</h4>
+            <p>Reducing deforestation by turning charcoal dust and banana peelings into cooking fuel.</p>
+            <div class="method-box">
+                <strong>Practical Skill:</strong> Engineering a manual press.<br>
+                <strong>Sustainability:</strong> Provides cheap energy while recycling organic waste.
+            </div>
+        </div>
+
+        <div class="idea-card">
+            <span class="sustainability-tag">WASTE MANAGEMENT</span>
+            <h4>Plastic-to-Paver Conversion</h4>
+            <p>Melting non-biodegradable plastics with sand to create durable garden tiles.</p>
+            <div class="method-box">
+                <strong>Practical Skill:</strong> Chemical ratio testing.<br>
+                <strong>Sustainability:</strong> Cleans the local environment of plastic pollution.
+            </div>
+        </div>
+
+        <div class="idea-card">
+            <span class="sustainability-tag">CIRCULAR ECONOMY</span>
+            <h4>Paper Charcoal Binder</h4>
+            <p>Using school waste paper to create a durable binder for loose charcoal dust briquettes.</p>
+            <div class="method-box">
+                <strong>Practical Skill:</strong> Pulp-to-dust ratio experimentation. <br>
+                <strong>Sustainability:</strong> Reduces school paper waste and provides fuel.
+            </div>
+        </div>
+    </div>
+
+    <div id="health" class="content-section">
+        <div class="idea-card">
+            <span class="sustainability-tag">SANITATION</span>
+            <h4>Solar Water Pasteurizer</h4>
+            <p>Using a black-painted container and a simple indicator to kill pathogens using UV rays.</p>
+            <div class="method-box">
+                <strong>Practical Skill:</strong> Measuring heat absorption.<br>
+                <strong>Sustainability:</strong> Safe water without burning wood or using chemicals.
+            </div>
+        </div>
+
+        <div class="idea-card">
+            <span class="sustainability-tag">WATER FILTRATION</span>
+            <h4>Low-Cost Clay Filter</h4>
+            <p>Combining local clay with sawdust to create porous pots that filter large water impurities.</p>
+            <div class="method-box">
+                <strong>Practical Skill:</strong> Pottery and kiln firing techniques. <br>
+                <strong>Sustainability:</strong> Permanent, low-tech solution for rural clean water.
+            </div>
+        </div>
+    </div>
+
+    <div id="agri" class="content-section">
+        <div class="idea-card">
+            <span class="sustainability-tag">FOOD SECURITY</span>
+            <h4>Hydroponic Fodder System</h4>
+            <p>Growing animal feed in 7 days using only water and trays, requiring zero land acreage.</p>
+            <div class="method-box">
+                <strong>Practical Skill:</strong> Nutrient solution management.<br>
+                <strong>Sustainability:</strong> Efficient land use for urban farming.
+            </div>
+        </div>
+
+        <div class="idea-card">
+            <span class="sustainability-tag">URBAN FARMING</span>
+            <h4>Vertical Sack Garden</h4>
+            <p>Maximizing vegetable production in small areas using sugar sacks and gravity irrigation.</p>
+            <div class="method-box">
+                <strong>Practical Skill:</strong> Drainage and stone-core engineering. <br>
+                <strong>Sustainability:</strong> Lowers food costs and promotes urban resilience.
+            </div>
+        </div>
+
+        <div class="idea-card">
+            <span class="sustainability-tag">ORGANIC FARMING</span>
+            <h4>Botanical Pest Spray</h4>
+            <p>Developing a biodegradable pesticide using local garlic, chili peppers, and soap.</p>
+            <div class="method-box">
+                <strong>Practical Skill:</strong> Active compound extraction and testing. <br>
+                <strong>Sustainability:</strong> Eliminates soil contamination from toxic chemicals.
+            </div>
+        </div>
+    </div>
+
+    <div id="digital" class="content-section">
+        <div class="idea-card">
+            <span class="sustainability-tag">SMART TECH</span>
+            <h4>Soil Moisture Monitor</h4>
+            <p>A programming project using Python or C++ to alert farmers when soil reaches a dry threshold.</p>
+            <div class="method-box">
+                <strong>Practical Skill:</strong> Coding logic and hardware interfacing. <br>
+                <strong>Sustainability:</strong> Conserves water by ensuring precise irrigation.
+            </div>
+        </div>
+
+        <div class="idea-card">
+            <span class="sustainability-tag">DATA MANAGEMENT</span>
+            <h4>Community Resource Hub</h4>
+            <p>An offline-first web portal for villagers to locate local services like clinics or shops.</p>
+            <div class="method-box">
+                <strong>Practical Skill:</strong> UI/UX design and database management. <br>
+                <strong>Sustainability:</strong> Connects community members to local sustainable resources.
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function openCat(evt, catName) {
+        var i, content, tabs;
+        content = document.getElementsByClassName("content-section");
+        for (i = 0; i < content.length; i++) { content[i].classList.remove("active"); }
+        tabs = document.getElementsByClassName("tab-btn");
+        for (i = 0; i < tabs.length; i++) { tabs[i].classList.remove("active"); }
+        document.getElementById(catName).classList.add("active");
+        evt.currentTarget.classList.add("active");
+    }
+</script>
+
+</body>
+</html>
