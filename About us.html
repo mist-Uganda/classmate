@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About Us | MIST</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@300;400&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --ink:    #0b0f14;
+      --deep:   #0d1b2a;
+      --mid:    #112240;
+      --teal:   #0a9396;
+      --teal2:  #94d2bd;
+      --sand:   #e9d8a6;
+      --rust:   #ca6702;
+      --white:  #f4f1eb;
+      --smoke:  #c9d4dc;
+      --line:   rgba(148,210,189,0.2);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Syne', sans-serif;
+      background: var(--ink);
+      color: var(--white);
+      overflow-x: hidden;
+    }
+
+    /* grain */
+    body::after {
+      content:'';
+      position:fixed; inset:0; pointer-events:none; z-index:999;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23g)' opacity='0.035'/%3E%3C/svg%3E");
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top:0; left:0; right:0; z-index:200;
+      display: flex; align-items:center; justify-content:space-between;
+      padding: 18px 52px;
+      background: rgba(11,15,20,0.8);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav-mark {
+      display:flex; align-items:center; gap:12px;
+    }
+    .nav-diamond {
+      width:10px; height:10px;
+      background: var(--teal);
+      transform: rotate(45deg);
+    }
+    .nav-name {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--teal2);
+    }
+    .nav-link {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--smoke);
+      text-decoration: none;
+      padding: 7px 20px;
+      border: 1px solid rgba(148,210,189,0.3);
+      transition: all 0.3s;
+    }
+    .nav-link:hover { color:var(--teal2); border-color:var(--teal2); background:rgba(10,147,150,0.07); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      padding: 130px 52px 80px;
+      position: relative; overflow: hidden;
+    }
+    .hero-grid {
+      position:absolute; inset:0; z-index:0;
+      background-image:
+        linear-gradient(rgba(10,147,150,0.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(10,147,150,0.07) 1px, transparent 1px);
+      background-size: 72px 72px;
+    }
+    .hero-glow {
+      position:absolute; top:10%; right:5%;
+      width:600px; height:600px; border-radius:50%;
+      background: radial-gradient(circle, rgba(10,147,150,0.12) 0%, transparent 70%);
+      pointer-events:none;
+    }
+    .hero-glow2 {
+      position:absolute; bottom:-5%; left:-5%;
+      width:400px; height:400px; border-radius:50%;
+      background: radial-gradient(circle, rgba(202,103,2,0.08) 0%, transparent 70%);
+      pointer-events:none;
+    }
+    .hero-body { position:relative; z-index:2; max-width:760px; }
+
+    .eyebrow {
+      display:inline-flex; align-items:center; gap:10px;
+      font-family:'IBM Plex Mono', monospace;
+      font-size:0.66rem; letter-spacing:0.28em; text-transform:uppercase;
+      color:var(--teal); margin-bottom:32px;
+      animation: fadeUp 0.7s ease both;
+    }
+    .eyebrow-line { width:30px; height:1px; background:var(--teal); }
+
+    h1 {
+      font-family:'Playfair Display', serif;
+      font-size: clamp(3.2rem, 7.5vw, 6rem);
+      font-weight: 700;
+      line-height: 1.08;
+      letter-spacing: -0.02em;
+      color: var(--white);
+      animation: fadeUp 0.7s 0.1s ease both;
+    }
+    h1 em { font-style:italic; color:var(--teal2); }
+
+    .hero-intro {
+      margin-top: 28px;
+      font-size: 1rem; font-weight:400;
+      color: rgba(244,241,235,0.58);
+      line-height: 1.8; max-width:520px;
+      animation: fadeUp 0.7s 0.2s ease both;
+    }
+
+    .hero-rule {
+      width:1px; height:60px;
+      background:linear-gradient(to bottom, var(--teal), transparent);
+      margin: 40px 0;
+      animation: growH 0.8s 0.4s ease both;
+    }
+
+    .hero-acro { animation: fadeUp 0.7s 0.3s ease both; }
+    .acro-row {
+      display:flex; align-items:baseline; gap:16px;
+      padding: 9px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .acro-row:first-child { border-top: 1px solid var(--line); }
+    .acro-l {
+      font-family:'IBM Plex Mono', monospace;
+      font-size:0.9rem; font-weight:400;
+      color:var(--teal); width:18px;
+    }
+    .acro-w {
+      font-family:'Playfair Display', serif;
+      font-size:1.15rem; font-weight:400;
+      color:rgba(244,241,235,0.75);
+      letter-spacing:0.06em;
+    }
+
+    .scroll-hint {
+      position:absolute; bottom:36px; left:52px;
+      display:flex; align-items:center; gap:12px;
+      font-family:'IBM Plex Mono',monospace;
+      font-size:0.6rem; letter-spacing:0.22em; text-transform:uppercase;
+      color:rgba(148,210,189,0.45);
+      animation: fadeUp 0.7s 0.8s ease both;
+    }
+    .scroll-tick { width:36px; height:1px; background:currentColor; }
+
+    /* ── VISION ── */
+    .vision {
+      padding: 110px 52px;
+      background: var(--white);
+      position:relative; overflow:hidden;
+    }
+    .vision-deco {
+      position:absolute; top:-60px; right:-20px;
+      font-family:'Playfair Display', serif;
+      font-size:22rem; font-weight:700; font-style:italic;
+      color:rgba(11,15,20,0.04); line-height:1; pointer-events:none;
+      user-select:none;
+    }
+    .vision-inner { max-width:700px; margin:0 auto; text-align:center; position:relative; z-index:1; }
+    .section-eyebrow {
+      font-family:'IBM Plex Mono',monospace;
+      font-size:0.64rem; letter-spacing:0.3em; text-transform:uppercase;
+      color:var(--teal); margin-bottom:32px; display:block;
+    }
+    .vision-q {
+      font-family:'Playfair Display', serif;
+      font-size: clamp(1.35rem, 3vw, 2rem);
+      font-weight:400; font-style:italic;
+      color:var(--deep); line-height:1.65;
+    }
+    .vision-sig {
+      margin-top:28px;
+      font-family:'IBM Plex Mono',monospace;
+      font-size:0.65rem; letter-spacing:0.22em; text-transform:uppercase;
+      color:#7a8b9a;
+    }
+
+    /* ── PILLARS ── */
+    .pillars-section {
+      padding: 110px 52px;
+      background: var(--deep);
+    }
+    .pillars-inner { max-width:1040px; margin:0 auto; }
+    .s-head {
+      display:flex; align-items:flex-end; gap:24px; margin-bottom:64px;
+    }
+    .s-title {
+      font-family:'Playfair Display',serif;
+      font-size:clamp(1.9rem,4.5vw,3rem);
+      font-weight:700; color:var(--white); line-height:1.1;
+    }
+    .s-title span { color:var(--teal2); font-style:italic; }
+    .s-rule { flex:1; height:1px; background:var(--line); margin-bottom:8px; max-width:180px; }
+
+    .grid4 {
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap:1px; background:var(--line);
+      border:1px solid var(--line);
+    }
+    .card {
+      background:var(--deep);
+      padding:38px 30px 34px;
+      position:relative; overflow:hidden;
+      transition:background 0.35s;
+    }
+    .card::after {
+      content:'';
+      position:absolute; top:0; left:0; right:0;
+      height:2px; background:var(--teal);
+      transform:scaleX(0); transform-origin:left;
+      transition:transform 0.35s ease;
+    }
+    .card:hover { background:#0e2038; }
+    .card:hover::after { transform:scaleX(1); }
+
+    .card-num {
+      font-family:'IBM Plex Mono',monospace;
+      font-size:0.6rem; letter-spacing:0.22em;
+      color:var(--teal); margin-bottom:20px;
+    }
+    .card-icon { font-size:1.7rem; margin-bottom:14px; display:block; }
+    .card-title {
+      font-family:'Playfair Display',serif;
+      font-size:1.2rem; font-weight:700; color:var(--white); margin-bottom:10px;
+    }
+    .card-text {
+      font-size:0.86rem; font-weight:400;
+      color:rgba(244,241,235,0.5); line-height:1.75;
+    }
+
+    /* ── LEADERSHIP ── */
+    .lead-section {
+      padding: 110px 52px;
+      background:linear-gradient(160deg, #0b0f14 0%, #0d1b2a 100%);
+    }
+    .lead-inner {
+      max-width:960px; margin:0 auto;
+      display:grid; grid-template-columns:1fr 1fr; gap:70px; align-items:start;
+    }
+    .lead-text .section-eyebrow { color:var(--sand); }
+    .lead-title {
+      font-family:'Playfair Display',serif;
+      font-size:clamp(1.7rem,3.5vw,2.5rem);
+      font-weight:700; color:var(--white); margin-top:16px; line-height:1.2;
+    }
+    .lead-title em { font-style:italic; color:var(--teal2); }
+    .lead-body {
+      margin-top:22px; font-size:0.92rem; font-weight:400;
+      color:rgba(244,241,235,0.55); line-height:1.85;
+    }
+
+    .founders-box {
+      border:1px solid var(--line);
+      background:rgba(10,147,150,0.04);
+      position:relative;
+    }
+    .founders-label {
+      position:absolute; top:-10px; left:22px;
+      background:var(--ink); padding:0 10px;
+      font-family:'IBM Plex Mono',monospace;
+      font-size:0.58rem; letter-spacing:0.25em; text-transform:uppercase;
+      color:var(--teal);
+    }
+    .founder {
+      display:flex; align-items:center; gap:20px;
+      padding:24px 28px;
+      border-bottom:1px solid var(--line);
+    }
+    .founder:last-child { border-bottom:none; }
+    .f-avatar {
+      width:50px; height:50px; border-radius:50%; flex-shrink:0;
+      background:linear-gradient(135deg, var(--mid), #1e3a5f);
+      border:1px solid rgba(10,147,150,0.35);
+      display:flex; align-items:center; justify-content:center;
+      font-family:'Playfair Display',serif;
+      font-size:1rem; font-weight:700; color:var(--teal2);
+    }
+    .f-name {
+      font-family:'Playfair Display',serif;
+      font-size:1.1rem; font-weight:700; color:var(--white);
+    }
+    .f-role {
+      font-family:'IBM Plex Mono',monospace;
+      font-size:0.6rem; letter-spacing:0.18em; text-transform:uppercase;
+      color:rgba(148,210,189,0.5); margin-top:4px;
+    }
+
+    /* ── AUDIO ── */
+    .audio-section {
+      padding: 80px 52px;
+      background: var(--white);
+    }
+    .audio-inner { max-width:680px; margin:0 auto; }
+    .audio-inner .section-eyebrow { color:var(--teal); margin-bottom:28px; }
+    .audio-card {
+      background:#fff;
+      border:1px solid #d8e0e8;
+      padding:30px 34px;
+      display:flex; align-items:flex-start; gap:24px;
+      box-shadow: 0 6px 30px rgba(11,15,20,0.07);
+    }
+    .a-badge {
+      font-family:'IBM Plex Mono',monospace;
+      font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase;
+      color:#fff; background:var(--deep);
+      padding:7px 12px; white-space:nowrap; flex-shrink:0; margin-top:2px;
+    }
+    .a-body { flex:1; }
+    .a-title {
+      font-family:'Playfair Display',serif;
+      font-size:1.15rem; font-weight:700; color:var(--deep);
+    }
+    .a-desc { font-size:0.82rem; color:#7a8b9a; margin-top:4px; }
+    audio { width:100%; margin-top:14px; accent-color:var(--teal); }
+
+    /* ── FOOTER ── */
+    footer {
+      background:#06090d;
+      border-top:1px solid var(--line);
+      padding:38px 52px;
+      display:flex; align-items:center; justify-content:space-between;
+      flex-wrap:wrap; gap:20px;
+    }
+    .ft-brand {
+      font-family:'Playfair Display',serif;
+      font-size:1.5rem; font-weight:700; font-style:italic;
+      color:var(--teal2);
+    }
+    .ft-copy {
+      font-family:'IBM Plex Mono',monospace;
+      font-size:0.62rem; letter-spacing:0.14em;
+      color:rgba(148,210,189,0.4); text-align:right; line-height:1.7;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(22px); }
+      to   { opacity:1; transform:none; }
+    }
+    @keyframes growH {
+      from { transform:scaleY(0); }
+      to   { transform:scaleY(1); }
+    }
+    .reveal { opacity:0; transform:translateY(28px); transition:opacity 0.65s ease, transform 0.65s ease; }
+    .reveal.in { opacity:1; transform:none; }
+    .reveal-d1 { transition-delay:0.08s; }
+    .reveal-d2 { transition-delay:0.16s; }
+    .reveal-d3 { transition-delay:0.24s; }
+    .reveal-d4 { transition-delay:0.32s; }
+
+    @media(max-width:700px) {
+      nav { padding:16px 24px; }
+      .hero,.vision,.pillars-section,.lead-section,.audio-section { padding-left:24px; padding-right:24px; }
+      .lead-inner { grid-template-columns:1fr; gap:44px; }
+      .s-head { flex-direction:column; align-items:flex-start; }
+      .s-rule { display:none; }
+      footer { flex-direction:column; padding:32px 24px; }
+      .ft-copy { text-align:left; }
+      .audio-card { flex-direction:column; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-mark">
+    <div class="nav-diamond"></div>
+    <span class="nav-name">M.I.S.T — Mpigi</span>
+  </div>
+  <a href="index.html" class="nav-link">← Home</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+  <div class="hero-body">
+    <div class="eyebrow"><span class="eyebrow-line"></span>Est. Mpigi · Uganda . 2026</div>
+    <h1>Mpigi <em>Innovators</em><br>in Science &amp;<br>Technology</h1>
+    <p class="hero-intro">A student-led organization dedicated to bridging the gap between classroom theory and real-world application.</p>
+    <div class="hero-rule"></div>
+    <div class="hero-acro">
+      <div class="acro-row"><span class="acro-l">M</span><span class="acro-w">Mpigi</span></div>
+      <div class="acro-row"><span class="acro-l">I</span><span class="acro-w">Innovators</span></div>
+      <div class="acro-row"><span class="acro-l">S</span><span class="acro-w">Science</span></div>
+      <div class="acro-row"><span class="acro-l">T</span><span class="acro-w">Technology</span></div>
+    </div>
+  </div>
+  <div class="scroll-hint"><span class="scroll-tick"></span>Scroll</div>
+</section>
+
+<!-- VISION -->
+<section class="vision reveal">
+  <div class="vision-deco">"</div>
+  <div class="vision-inner">
+    <span class="section-eyebrow">Our Vision</span>
+    <p class="vision-q">"Our vision is to transform theoretical knowledge into tangible solutions that address community challenges through science, engineering, and digital innovation."</p>
+    <p class="vision-sig">— MIST Executive Team</p>
+  </div>
+</section>
+
+<!-- PILLARS -->
+<section class="pillars-section">
+  <div class="pillars-inner">
+    <div class="s-head reveal">
+      <h2 class="s-title">What <span>We Do</span></h2>
+      <div class="s-rule"></div>
+    </div>
+    <div class="grid4">
+      <div class="card reveal reveal-d1">
+        <div class="card-num">01</div>
+        <span class="card-icon">⚗️</span>
+        <div class="card-title">Chemical Manufacturing</div>
+        <p class="card-text">We develop local production techniques for essential goods, including liquid soap and high-quality school chalk.</p>
+      </div>
+      <div class="card reveal reveal-d2">
+        <div class="card-num">02</div>
+        <span class="card-icon">🔭</span>
+        <div class="card-title">Applied Physics</div>
+        <p class="card-text">Our club designs physical prototypes — such as projectile motion simulators — to master complex scientific principles through building.</p>
+      </div>
+      <div class="card reveal reveal-d3">
+        <div class="card-num">03</div>
+        <span class="card-icon">💻</span>
+        <div class="card-title">Software Development</div>
+        <p class="card-text">We focus on web and mobile programming to build functional digital tools, including school portals and AI interfaces.</p>
+      </div>
+      <div class="card reveal reveal-d4">
+        <div class="card-num">04</div>
+        <span class="card-icon">📐</span>
+        <div class="card-title">Academic Excellence</div>
+        <p class="card-text">We maintain a rigorous focus on UCE standards, aiming for top-tier performance in Mathematics and Physics.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LEADERSHIP -->
+<section class="lead-section">
+  <div class="lead-inner">
+    <div class="lead-text reveal">
+      <span class="section-eyebrow">Leadership &amp; Governance</span>
+      <h2 class="lead-title">Built for <em>Discipline</em><br>&amp; Innovation</h2>
+      <p class="lead-body">Based at Mpigi High School, MIST operates under a formal constitution. Our executive team fosters a culture of technical proficiency, discipline, and constant experimentation — pushing the boundaries of what student-led innovation can achieve.</p>
+    </div>
+    <div class="founders-box reveal">
+      <span class="founders-label">Co-Founders</span>
+      <div class="founder">
+        <div class="f-avatar">SM</div>
+        <div>
+          <div class="f-name">Ssenyondo Morgan</div>
+          <div class="f-role">Co-Founder · Senior 4</div>
+        </div>
+      </div>
+      <div class="founder">
+        <div class="f-avatar">SJ</div>
+        <div>
+          <div class="f-name">Ssenyondo Jovan</div>
+          <div class="f-role">Co-Founder · Senior 3</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AUDIO -->
+<section class="audio-section reveal">
+  <div class="audio-inner">
+    <span class="section-eyebrow">Official Message</span>
+    <div class="audio-card">
+      <span class="a-badge">M.I.S.T</span>
+      <div class="a-body">
+        <div class="a-title">About MIST</div>
+        <div class="a-desc">A message for members and visitors.</div>
+        <audio controls>
+          <source src="audio3.mp3" type="audio/mpeg"/>
+          Your browser does not support the audio element.
+        </audio>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ft-brand">MIST</div>
+  <div class="ft-copy">
+    © 2026 Mpigi Innovators in Science and Technology<br>
+    Developed by ORION · Mpigi , Uganda
+  </div>
+</footer>
+
+<script>
+  const els = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); obs.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  els.forEach(el => obs.observe(el));
+</script>
+</body>
+</html>

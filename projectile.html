@@ -3,226 +3,987 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MIST | Projectile Lab</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <title>MIST | Ballistics Lab</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #003366;
-            --accent: #3b82f6;
-            --dark: #0a192f;
-            --slate: #1e293b;
-            --white: #fff;
+            --bg: #06090f;
+            --panel: #0c1220;
+            --panel2: #0f1829;
+            --border: #1a2840;
+            --border2: #243550;
+            --accent: #00d4ff;
+            --accent2: #0099cc;
+            --red: #ff4444;
+            --green: #00ff9d;
+            --amber: #ffb800;
+            --text: #c8d8f0;
+            --muted: #4a6080;
+            --white: #e8f0fc;
         }
 
-        body { font-family: 'Inter', sans-serif; background: #f8fafc; margin: 0; padding: 15px; color: var(--dark); }
-        .container { max-width: 1000px; margin: auto; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        /* Simulation Screen */
-        .sim-viewport {
-            background: var(--dark);
-            border-radius: 24px;
-            height: 350px;
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 24px;
+            background-image:
+                radial-gradient(ellipse 60% 40% at 50% -10%, rgba(0,100,200,0.15) 0%, transparent 70%);
+        }
+
+        .shell {
+            max-width: 1100px;
+            margin: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* ── Header ── */
+        .header {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .header-left { display: flex; flex-direction: column; gap: 4px; }
+
+        .logo-row {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .logo-badge {
+            background: var(--accent);
+            color: var(--bg);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 4px;
+            letter-spacing: 0.08em;
+        }
+
+        h1 {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.4rem;
+            color: var(--white);
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            font-size: 0.75rem;
+            color: var(--muted);
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        .status-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .status-pill {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--muted);
+            letter-spacing: 0.06em;
+        }
+
+        .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--green);
+            box-shadow: 0 0 8px var(--green);
+            animation: pulse 2s infinite;
+        }
+
+        .dot.idle { background: var(--amber); box-shadow: 0 0 8px var(--amber); animation: none; }
+        .dot.firing { background: var(--red); box-shadow: 0 0 10px var(--red); animation: fastpulse 0.4s infinite; }
+
+        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+        @keyframes fastpulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+        /* ── Viewport ── */
+        .viewport-wrap {
             position: relative;
+            border-radius: 12px;
             overflow: hidden;
-            border: 4px solid var(--slate);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
-            margin-bottom: 20px;
+            border: 1px solid var(--border2);
+            box-shadow: 0 0 0 1px rgba(0,212,255,0.05), 0 30px 60px rgba(0,0,0,0.5);
         }
 
-        svg { width: 100%; height: 100%; }
+        .viewport-wrap::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(0,212,255,0.04) 0%, transparent 30%);
+            pointer-events: none;
+            z-index: 2;
+        }
 
-        /* HUD Display */
-        .hud {
+        #canvas {
+            display: block;
+            width: 100%;
+            height: 360px;
+            background: var(--bg);
+        }
+
+        /* corner decorations */
+        .corner {
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            z-index: 3;
+        }
+        .corner.tl { top: 10px; left: 10px; border-top: 2px solid var(--accent); border-left: 2px solid var(--accent); }
+        .corner.tr { top: 10px; right: 10px; border-top: 2px solid var(--accent); border-right: 2px solid var(--accent); }
+        .corner.bl { bottom: 10px; left: 10px; border-bottom: 2px solid var(--accent); border-left: 2px solid var(--accent); }
+        .corner.br { bottom: 10px; right: 10px; border-bottom: 2px solid var(--accent); border-right: 2px solid var(--accent); }
+
+        /* HUD panels */
+        .hud-tl {
             position: absolute;
             top: 20px;
             left: 20px;
-            background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(5px);
-            padding: 10px 15px;
-            border-radius: 10px;
-            border: 1px solid rgba(255,255,255,0.1);
-            color: #60a5fa;
-            font-family: monospace;
-            font-size: 0.8rem;
+            z-index: 4;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
         }
 
-        /* Controls */
-        .control-panel {
-            background: var(--white);
-            padding: 25px;
-            border-radius: 20px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        .hud-tr {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 4;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            align-items: flex-end;
+        }
+
+        .hud-block {
+            background: rgba(6,9,15,0.75);
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--border2);
+            border-radius: 6px;
+            padding: 8px 12px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--muted);
+            line-height: 1.8;
+        }
+
+        .hud-block .val {
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        .hud-label {
+            font-size: 0.55rem;
+            color: var(--muted);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        /* ── Controls ── */
+        .controls {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
+            grid-template-columns: 1fr 1fr 1fr auto;
+            gap: 14px;
             align-items: end;
         }
 
-        .slider-group { display: flex; flex-direction: column; gap: 8px; }
-        .slider-group label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; color: #64748b; }
-        .val-display { color: var(--accent); font-weight: 900; float: right; }
-
-        input[type=range] { width: 100%; cursor: pointer; accent-color: var(--accent); }
-
-        select {
-            padding: 10px; border-radius: 10px; border: 1px solid #e2e8f0;
-            font-weight: 600; outline: none; background: #f1f5f9;
+        @media(max-width: 700px) {
+            .controls { grid-template-columns: 1fr 1fr; }
         }
 
-        .launch-btn {
-            background: var(--accent);
-            color: white;
-            border: none;
-            padding: 15px;
-            border-radius: 12px;
-            font-weight: 900;
-            cursor: pointer;
-            transition: 0.2s;
+        .ctrl-card {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 16px 18px;
             display: flex;
+            flex-direction: column;
+            gap: 10px;
+            transition: border-color 0.2s;
+        }
+
+        .ctrl-card:hover { border-color: var(--border2); }
+
+        .ctrl-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+
+        .ctrl-label {
+            font-size: 0.6rem;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        .ctrl-value {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.95rem;
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 3px;
+            border-radius: 2px;
+            background: var(--border2);
+            outline: none;
+            cursor: pointer;
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 8px rgba(0,212,255,0.6);
+            cursor: pointer;
+            border: 2px solid var(--bg);
+            transition: transform 0.1s;
+        }
+
+        input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.2); }
+
+        input[type=range]::-moz-range-thumb {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 8px rgba(0,212,255,0.6);
+            cursor: pointer;
+            border: 2px solid var(--bg);
+        }
+
+        .track-fill {
+            font-size: 0.6rem;
+            color: var(--muted);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        select {
+            background: var(--bg);
+            border: 1px solid var(--border2);
+            border-radius: 6px;
+            color: var(--text);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            padding: 8px 10px;
+            width: 100%;
+            cursor: pointer;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        select:hover, select:focus { border-color: var(--accent); }
+        select option { background: var(--panel); }
+
+        /* Launch Button */
+        .launch-btn {
+            background: transparent;
+            border: 1.5px solid var(--accent);
+            color: var(--accent);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            padding: 16px 28px;
+            border-radius: 10px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: center;
+            gap: 6px;
+            min-width: 140px;
+            height: 100%;
+        }
+
+        .launch-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--accent);
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .launch-btn:hover::before { opacity: 0.08; }
+        .launch-btn:hover { box-shadow: 0 0 20px rgba(0,212,255,0.2); }
+        .launch-btn:active { transform: scale(0.98); }
+
+        .launch-btn.firing {
+            border-color: var(--red);
+            color: var(--red);
+        }
+
+        .launch-btn.firing::before { background: var(--red); }
+
+        .launch-btn.reset {
+            border-color: var(--amber);
+            color: var(--amber);
+        }
+
+        .launch-btn .btn-icon {
+            font-size: 1.5rem;
+            line-height: 1;
+            position: relative;
+            z-index: 1;
+        }
+
+        .launch-btn span {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ── Telemetry Bar ── */
+        .telemetry {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
             gap: 10px;
         }
 
-        .launch-btn:hover { background: #2563eb; transform: translateY(-2px); }
-        .launch-btn:active { transform: translateY(0); }
+        @media(max-width:700px) { .telemetry { grid-template-columns: repeat(3,1fr); } }
+
+        .telem-card {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px 14px;
+        }
+
+        .telem-label {
+            font-size: 0.55rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        .telem-val {
+            font-family: 'Space Mono', monospace;
+            font-size: 1rem;
+            color: var(--white);
+            font-weight: 700;
+        }
+
+        .telem-val.green { color: var(--green); }
+        .telem-val.amber { color: var(--amber); }
+
+        .telem-unit {
+            font-size: 0.6rem;
+            color: var(--muted);
+            font-family: 'Space Mono', monospace;
+        }
+
+        /* progress bar under telem */
+        .telem-bar-wrap { margin-top: 6px; height: 2px; background: var(--border); border-radius: 1px; }
+        .telem-bar { height: 100%; background: var(--accent); border-radius: 1px; transition: width 0.1s; }
+        .telem-bar.green { background: var(--green); }
+        .telem-bar.amber { background: var(--amber); }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div style="margin-bottom: 20px;">
-        <h1 style="margin:0; color: var(--primary); font-weight: 900;">Ballistics Lab</h1>
-        <p style="margin:0; font-size: 0.9rem; color: #64748b;">MIST Computational Physics Module</p>
+<div class="shell">
+
+    <!-- Header -->
+    <div class="header">
+        <div class="header-left">
+            <div class="logo-row">
+                <div class="logo-badge">MIST</div>
+                <a href="index.html"><button>Home</button></a>
+                <h1>Ballistics Lab</h1>
+            </div>
+            <div class="subtitle">Computational Physics Module · Projectile Simulation v2.4</div>
+        </div>
+        <div class="status-row">
+            <div class="status-pill">
+                <div class="dot" id="statusDot"></div>
+                <span id="statusText">SYSTEM READY</span>
+            </div>
+        </div>
     </div>
 
-    <div class="sim-viewport">
-        <div class="hud">
-            LIVE VECTORS<br>
-            <span id="coords">X: 0 | Y: 0</span>
+    <!-- Viewport -->
+    <div class="viewport-wrap">
+        <div class="corner tl"></div>
+        <div class="corner tr"></div>
+        <div class="corner bl"></div>
+        <div class="corner br"></div>
+
+        <div class="hud-tl">
+            <div class="hud-block">
+                <div class="hud-label">Position</div>
+                <div>X <span class="val" id="hudX">0.0</span> m</div>
+                <div>Y <span class="val" id="hudY">0.0</span> m</div>
+            </div>
+            <div class="hud-block">
+                <div class="hud-label">Velocity</div>
+                <div>Vx <span class="val" id="hudVx">—</span> m/s</div>
+                <div>Vy <span class="val" id="hudVy">—</span> m/s</div>
+            </div>
         </div>
-        
-        <svg id="canvas" viewBox="0 0 800 400">
-            <defs>
-                <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1e293b" stroke-width="0.5"/>
-                </pattern>
-            </defs>
-            <rect width="100%" height="100%" fill="url(#grid)" />
-            
-            <path id="path" d="" fill="none" stroke="#3b82f6" stroke-width="2" stroke-dasharray="5,5" opacity="0.6"/>
-            
-            <circle id="projectile" cx="20" cy="380" r="8" fill="#ef4444" style="filter: drop-shadow(0 0 8px rgba(239,68,68,0.8))" />
-            
-            <rect x="10" y="375" width="20" height="10" fill="#475569" />
-            <g id="barrel" transform="rotate(-45, 20, 380)">
-                <rect x="20" y="375" width="40" height="10" fill="#64748b" rx="2" />
-            </g>
-            
-            <rect x="0" y="380" width="800" height="20" fill="#0f172a" />
-        </svg>
+
+        <div class="hud-tr">
+            <div class="hud-block" style="text-align:right;">
+                <div class="hud-label">Environment</div>
+                <div>g = <span class="val" id="hudG">9.80</span> m/s²</div>
+                <div><span class="val" id="hudEnv">Earth</span></div>
+            </div>
+            <div class="hud-block" style="text-align:right;">
+                <div class="hud-label">Trajectory</div>
+                <div>Range <span class="val" id="hudRange">—</span> m</div>
+                <div>Apex <span class="val" id="hudApex">—</span> m</div>
+            </div>
+        </div>
+
+        <canvas id="canvas"></canvas>
     </div>
 
-    <div class="control-panel">
-        <div class="slider-group">
-            <label>Angle <span class="val-display" id="angleVal">45°</span></label>
-            <input type="range" id="angle" min="0" max="90" value="45">
+    <!-- Controls -->
+    <div class="controls">
+        <div class="ctrl-card">
+            <div class="ctrl-header">
+                <div class="ctrl-label">Launch Angle</div>
+                <div class="ctrl-value" id="angleVal">45.0°</div>
+            </div>
+            <input type="range" id="angle" min="1" max="89" value="45">
+            <div class="track-fill"><span>1°</span><span>89°</span></div>
         </div>
-        
-        <div class="slider-group">
-            <label>Velocity <span class="val-display" id="velVal">60 m/s</span></label>
+
+        <div class="ctrl-card">
+            <div class="ctrl-header">
+                <div class="ctrl-label">Initial Velocity</div>
+                <div class="ctrl-value" id="velVal">60.0 m/s</div>
+            </div>
             <input type="range" id="vel" min="10" max="120" value="60">
+            <div class="track-fill"><span>10</span><span>120 m/s</span></div>
         </div>
 
-        <div class="slider-group">
-            <label>Environment</label>
+        <div class="ctrl-card">
+            <div class="ctrl-header">
+                <div class="ctrl-label">Environment</div>
+            </div>
             <select id="gravity">
-                <option value="9.8">Earth (9.8m/s²)</option>
-                <option value="1.62">Moon (1.62m/s²)</option>
-                <option value="3.71">Mars (3.71m/s²)</option>
-                <option value="24.79">Jupiter (24.79m/s²)</option>
+                <option value="9.80|Earth">Earth — 9.80 m/s²</option>
+                <option value="1.62|Moon">Moon — 1.62 m/s²</option>
+                <option value="3.71|Mars">Mars — 3.71 m/s²</option>
+                <option value="8.87|Venus">Venus — 8.87 m/s²</option>
+                <option value="24.79|Jupiter">Jupiter — 24.79 m/s²</option>
+                <option value="0.62|Pluto">Pluto — 0.62 m/s²</option>
             </select>
+            <div class="telem-label" style="margin-top:6px;" id="gravDesc">Standard atmospheric conditions</div>
         </div>
 
         <button class="launch-btn" id="launchBtn">
-            <i data-lucide="play" size="18"></i> INITIATE LAUNCH
+            <span class="btn-icon" id="btnIcon">▶</span>
+            <span id="btnLabel">LAUNCH</span>
         </button>
     </div>
+
+    <!-- Telemetry -->
+    <div class="telemetry">
+        <div class="telem-card">
+            <div class="telem-label">Time of Flight</div>
+            <div class="telem-val" id="tTime">—</div>
+            <div class="telem-unit">seconds</div>
+            <div class="telem-bar-wrap"><div class="telem-bar" id="tTimeBar" style="width:0%"></div></div>
+        </div>
+        <div class="telem-card">
+            <div class="telem-label">Max Range</div>
+            <div class="telem-val green" id="tRange">—</div>
+            <div class="telem-unit">meters</div>
+            <div class="telem-bar-wrap"><div class="telem-bar green" id="tRangeBar" style="width:0%"></div></div>
+        </div>
+        <div class="telem-card">
+            <div class="telem-label">Max Altitude</div>
+            <div class="telem-val amber" id="tApex">—</div>
+            <div class="telem-unit">meters</div>
+            <div class="telem-bar-wrap"><div class="telem-bar amber" id="tApexBar" style="width:0%"></div></div>
+        </div>
+        <div class="telem-card">
+            <div class="telem-label">Impact Speed</div>
+            <div class="telem-val" id="tImpact">—</div>
+            <div class="telem-unit">m/s</div>
+            <div class="telem-bar-wrap"><div class="telem-bar" id="tImpactBar" style="width:0%"></div></div>
+        </div>
+        <div class="telem-card">
+            <div class="telem-label">Optimal Angle</div>
+            <div class="telem-val" id="tOptimal">45.0°</div>
+            <div class="telem-unit">for max range</div>
+            <div class="telem-bar-wrap"><div class="telem-bar" style="width:50%"></div></div>
+        </div>
+    </div>
+
 </div>
 
 <script>
-    const projectile = document.getElementById('projectile');
-    const pathTag = document.getElementById('path');
-    const barrel = document.getElementById('barrel');
-    const coordDisplay = document.getElementById('coords');
-    
-    let isFiring = false;
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
 
-    // Update Barrel Angle Visually
-    document.getElementById('angle').addEventListener('input', (e) => {
-        const val = e.target.value;
-        document.getElementById('angleVal').innerText = val + "°";
-        barrel.setAttribute('transform', `rotate(${-val}, 20, 380)`);
-    });
+// State
+let isFiring = false;
+let animId = null;
+let currentPath = [];
 
-    document.getElementById('vel').addEventListener('input', (e) => {
-        document.getElementById('velVal').innerText = e.target.value + " m/s";
-    });
+const ENVS = {
+    'Earth': { desc: 'Standard atmospheric conditions' },
+    'Moon': { desc: 'No atmosphere, 1/6 Earth gravity' },
+    'Mars': { desc: 'Thin CO₂ atmosphere, reduced gravity' },
+    'Venus': { desc: 'Dense atmosphere, similar gravity to Earth' },
+    'Jupiter': { desc: 'Extreme gravity, gas giant surface' },
+    'Pluto': { desc: 'Dwarf planet, negligible atmosphere' },
+};
 
-    function launch() {
-        if (isFiring) return;
-        isFiring = true;
-        
-        const v0 = Number(document.getElementById('vel').value);
-        const angle = Number(document.getElementById('angle').value);
-        const g = Number(document.getElementById('gravity').value);
-        
-        const theta = (angle * Math.PI) / 180;
-        const scale = 3; 
-        const startX = 20;
-        const startY = 380;
+function getParams() {
+    const v0 = Number(document.getElementById('vel').value);
+    const angle = Number(document.getElementById('angle').value);
+    const [g, envName] = document.getElementById('gravity').value.split('|');
+    return { v0, angle, g: Number(g), envName };
+}
 
-        let t = 0;
-        const dt = 0.05;
-        let dPath = `M ${startX} ${startY}`;
+function calcTheoretical({ v0, angle, g }) {
+    const theta = angle * Math.PI / 180;
+    const sinA = Math.sin(theta), cosA = Math.cos(theta);
+    const tFlight = (2 * v0 * sinA) / g;
+    const range = (v0 * v0 * Math.sin(2 * theta)) / g;
+    const apex = (v0 * v0 * sinA * sinA) / (2 * g);
+    const vxFinal = v0 * cosA;
+    const vyFinal = v0 * sinA - g * tFlight;
+    const impactSpeed = Math.sqrt(vxFinal * vxFinal + vyFinal * vyFinal);
+    return { tFlight, range, apex, impactSpeed };
+}
 
-        function step() {
-            const x = v0 * Math.cos(theta) * t;
-            const y = (v0 * Math.sin(theta) * t) - (0.5 * g * Math.pow(t, 2));
+// Canvas drawing
+function resize() {
+    const wrap = canvas.parentElement;
+    canvas.width = wrap.clientWidth;
+    canvas.height = 360;
+    if (!isFiring) drawIdle();
+}
 
-            const drawX = startX + (x * scale);
-            const drawY = startY - (y * scale);
+function drawGrid() {
+    const W = canvas.width, H = canvas.height;
+    const spacing = 40;
+    ctx.strokeStyle = 'rgba(26,40,64,0.8)';
+    ctx.lineWidth = 1;
+    for (let x = 0; x < W; x += spacing) {
+        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
+    }
+    for (let y = 0; y < H; y += spacing) {
+        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
+    }
+}
 
-            if (drawY > startY || drawX > 800) {
-                isFiring = false;
-                document.getElementById('launchBtn').innerHTML = '<i data-lucide="rotate-ccw"></i> RESET';
-                lucide.createIcons();
-                return;
-            }
+function drawGround() {
+    const W = canvas.width, H = canvas.height;
+    const groundY = H - 32;
 
-            projectile.setAttribute('cx', drawX);
-            projectile.setAttribute('cy', drawY);
-            
-            dPath += ` L ${drawX} ${drawY}`;
-            pathTag.setAttribute('d', dPath);
-            
-            coordDisplay.innerText = `X: ${Math.round(x)}m | Y: ${Math.round(y)}m`;
+    // ground gradient
+    const grd = ctx.createLinearGradient(0, groundY, 0, H);
+    grd.addColorStop(0, 'rgba(0,212,255,0.08)');
+    grd.addColorStop(1, 'rgba(0,212,255,0)');
+    ctx.fillStyle = grd;
+    ctx.fillRect(0, groundY, W, H - groundY);
 
-            t += dt;
-            requestAnimationFrame(step);
-        }
-        
-        pathTag.setAttribute('d', ""); // Reset path
-        requestAnimationFrame(step);
+    ctx.strokeStyle = 'rgba(0,212,255,0.35)';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(0, groundY);
+    ctx.lineTo(W, groundY);
+    ctx.stroke();
+
+    // tick marks
+    ctx.fillStyle = 'rgba(74,96,128,0.6)';
+    ctx.font = '9px Space Mono, monospace';
+    ctx.textAlign = 'center';
+    const { v0, angle, g } = getParams();
+    const theta = angle * Math.PI / 180;
+    const totalRange = (v0 * v0 * Math.sin(2 * theta)) / g;
+    const scale = getScale();
+    for (let m = 0; m <= Math.ceil(totalRange * 1.2); m += pickStep(totalRange)) {
+        const px = 60 + m * scale;
+        if (px > W - 20) break;
+        ctx.fillStyle = 'rgba(74,96,128,0.5)';
+        ctx.fillRect(px, groundY, 1, 5);
+        ctx.fillStyle = 'rgba(74,96,128,0.6)';
+        ctx.fillText(m + 'm', px, groundY + 16);
+    }
+}
+
+function pickStep(range) {
+    if (range < 50) return 10;
+    if (range < 200) return 25;
+    if (range < 500) return 50;
+    if (range < 2000) return 200;
+    return 500;
+}
+
+function getScale() {
+    const W = canvas.width;
+    const { v0, angle, g } = getParams();
+    const theta = angle * Math.PI / 180;
+    const range = (v0 * v0 * Math.sin(2 * theta)) / g;
+    const usableW = W - 100;
+    return Math.min(usableW / Math.max(range, 1), 8);
+}
+
+const ORIGIN_X = 60;
+function getOriginY() { return canvas.height - 32; }
+
+function drawCannon(angle) {
+    const ox = ORIGIN_X, oy = getOriginY();
+    ctx.save();
+    ctx.translate(ox, oy);
+
+    // base
+    ctx.fillStyle = '#1e293b';
+    ctx.beginPath();
+    ctx.arc(0, 0, 12, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(0,212,255,0.3)';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+
+    // barrel
+    ctx.rotate(-(angle * Math.PI / 180));
+    const bLen = 36, bH = 8;
+    const barrelGrd = ctx.createLinearGradient(0, -bH/2, 0, bH/2);
+    barrelGrd.addColorStop(0, '#475569');
+    barrelGrd.addColorStop(0.5, '#64748b');
+    barrelGrd.addColorStop(1, '#334155');
+    ctx.fillStyle = barrelGrd;
+    ctx.beginPath();
+    ctx.roundRect(0, -bH/2, bLen, bH, 3);
+    ctx.fill();
+
+    // muzzle flash if firing
+    if (isFiring && currentPath.length < 3) {
+        ctx.fillStyle = 'rgba(255,180,0,0.9)';
+        ctx.beginPath();
+        ctx.arc(bLen + 6, 0, 8, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = 'rgba(255,255,100,0.6)';
+        ctx.beginPath();
+        ctx.arc(bLen + 6, 0, 4, 0, Math.PI * 2);
+        ctx.fill();
     }
 
-    document.getElementById('launchBtn').onclick = () => {
-        if (!isFiring) launch();
-        else location.reload(); // Simple reset
-    };
+    ctx.restore();
+}
 
-    lucide.createIcons();
+function drawTrajectoryGhost() {
+    const { v0, angle, g } = getParams();
+    const theta = angle * Math.PI / 180;
+    const scale = getScale();
+    const ox = ORIGIN_X, oy = getOriginY();
+
+    ctx.save();
+    ctx.setLineDash([4, 6]);
+    ctx.strokeStyle = 'rgba(0,212,255,0.12)';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+
+    const tFlight = (2 * v0 * Math.sin(theta)) / g;
+    const steps = 80;
+    for (let i = 0; i <= steps; i++) {
+        const t = (i / steps) * tFlight;
+        const x = v0 * Math.cos(theta) * t;
+        const y = v0 * Math.sin(theta) * t - 0.5 * g * t * t;
+        const px = ox + x * scale;
+        const py = oy - y * scale;
+        if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+    }
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.restore();
+}
+
+function drawPath() {
+    if (currentPath.length < 2) return;
+    const scale = getScale();
+    const ox = ORIGIN_X, oy = getOriginY();
+
+    // glow under path
+    ctx.save();
+    ctx.shadowColor = 'rgba(0,212,255,0.5)';
+    ctx.shadowBlur = 8;
+    ctx.strokeStyle = 'rgba(0,212,255,0.8)';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    currentPath.forEach(([x, y], i) => {
+        const px = ox + x * scale;
+        const py = oy - y * scale;
+        if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+    });
+    ctx.stroke();
+    ctx.restore();
+}
+
+function drawProjectile(x, y) {
+    const scale = getScale();
+    const ox = ORIGIN_X, oy = getOriginY();
+    const px = ox + x * scale;
+    const py = oy - y * scale;
+
+    // glow
+    const grd = ctx.createRadialGradient(px, py, 0, px, py, 16);
+    grd.addColorStop(0, 'rgba(255,68,68,0.4)');
+    grd.addColorStop(1, 'transparent');
+    ctx.fillStyle = grd;
+    ctx.beginPath();
+    ctx.arc(px, py, 16, 0, Math.PI * 2);
+    ctx.fill();
+
+    // ball
+    const ballGrd = ctx.createRadialGradient(px - 2, py - 2, 0, px, py, 8);
+    ballGrd.addColorStop(0, '#ff8888');
+    ballGrd.addColorStop(1, '#cc2222');
+    ctx.fillStyle = ballGrd;
+    ctx.beginPath();
+    ctx.arc(px, py, 8, 0, Math.PI * 2);
+    ctx.fill();
+}
+
+function drawVelocityVector(x, y, vx, vy) {
+    const scale = getScale();
+    const ox = ORIGIN_X, oy = getOriginY();
+    const px = ox + x * scale;
+    const py = oy - y * scale;
+
+    const mag = Math.sqrt(vx * vx + vy * vy);
+    if (mag < 0.5) return;
+    const normX = vx / mag * 30;
+    const normY = -vy / mag * 30;
+
+    ctx.save();
+    ctx.strokeStyle = 'rgba(255, 184, 0, 0.7)';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(px, py);
+    ctx.lineTo(px + normX, py + normY);
+    // arrowhead
+    const headLen = 7;
+    const angle = Math.atan2(normY, normX);
+    ctx.lineTo(px + normX - headLen * Math.cos(angle - 0.4), py + normY - headLen * Math.sin(angle - 0.4));
+    ctx.moveTo(px + normX, py + normY);
+    ctx.lineTo(px + normX - headLen * Math.cos(angle + 0.4), py + normY - headLen * Math.sin(angle + 0.4));
+    ctx.stroke();
+    ctx.restore();
+}
+
+function drawScene(projX, projY, vx, vy) {
+    const W = canvas.width, H = canvas.height;
+    ctx.clearRect(0, 0, W, H);
+    drawGrid();
+    drawTrajectoryGhost();
+    drawPath();
+    drawGround();
+    drawCannon(getParams().angle);
+    if (projX !== undefined) {
+        drawProjectile(projX, projY);
+        drawVelocityVector(projX, projY, vx, vy);
+    }
+}
+
+function drawIdle() {
+    drawScene();
+    drawProjectile(0, 0);
+}
+
+// HUD updates
+function updateHUD(x, y, vx, vy, { tFlight, range, apex, impactSpeed }) {
+    document.getElementById('hudX').textContent = x.toFixed(1);
+    document.getElementById('hudY').textContent = y.toFixed(1);
+    document.getElementById('hudVx').textContent = vx.toFixed(1);
+    document.getElementById('hudVy').textContent = vy.toFixed(1);
+    document.getElementById('hudRange').textContent = range.toFixed(1);
+    document.getElementById('hudApex').textContent = apex.toFixed(1);
+}
+
+function updateTelemetry({ tFlight, range, apex, impactSpeed }) {
+    document.getElementById('tTime').textContent = tFlight.toFixed(2);
+    document.getElementById('tRange').textContent = range.toFixed(1);
+    document.getElementById('tApex').textContent = apex.toFixed(1);
+    document.getElementById('tImpact').textContent = impactSpeed.toFixed(1);
+
+    document.getElementById('tTimeBar').style.width = Math.min(tFlight / 60 * 100, 100) + '%';
+    document.getElementById('tRangeBar').style.width = Math.min(range / 1500 * 100, 100) + '%';
+    document.getElementById('tApexBar').style.width = Math.min(apex / 400 * 100, 100) + '%';
+    document.getElementById('tImpactBar').style.width = Math.min(impactSpeed / 120 * 100, 100) + '%';
+}
+
+function setStatus(mode) {
+    const dot = document.getElementById('statusDot');
+    const txt = document.getElementById('statusText');
+    dot.className = 'dot ' + mode;
+    if (mode === 'firing') txt.textContent = 'PROJECTILE IN FLIGHT';
+    else if (mode === 'idle') txt.textContent = 'AWAITING LAUNCH';
+    else txt.textContent = 'SYSTEM READY';
+}
+
+// Sliders
+document.getElementById('angle').addEventListener('input', (e) => {
+    document.getElementById('angleVal').textContent = Number(e.target.value).toFixed(1) + '°';
+    if (!isFiring) { currentPath = []; drawIdle(); }
+    updatePreview();
+});
+
+document.getElementById('vel').addEventListener('input', (e) => {
+    document.getElementById('velVal').textContent = Number(e.target.value).toFixed(1) + ' m/s';
+    updatePreview();
+});
+
+document.getElementById('gravity').addEventListener('change', (e) => {
+    const [g, envName] = e.target.value.split('|');
+    document.getElementById('hudG').textContent = Number(g).toFixed(2);
+    document.getElementById('hudEnv').textContent = envName;
+    document.getElementById('gravDesc').textContent = ENVS[envName]?.desc || '';
+    updatePreview();
+});
+
+function updatePreview() {
+    const p = getParams();
+    const th = calcTheoretical(p);
+    document.getElementById('hudRange').textContent = th.range.toFixed(1);
+    document.getElementById('hudApex').textContent = th.apex.toFixed(1);
+    if (!isFiring) { drawScene(); drawProjectile(0, 0); }
+}
+
+// Launch
+function launch() {
+    if (isFiring) return;
+    isFiring = true;
+    currentPath = [];
+    setStatus('firing');
+
+    const { v0, angle, g } = getParams();
+    const theta = angle * Math.PI / 180;
+    const vx0 = v0 * Math.cos(theta);
+    const vy0 = v0 * Math.sin(theta);
+    const theoretical = calcTheoretical({ v0, angle, g });
+
+    updateTelemetry(theoretical);
+
+    document.getElementById('launchBtn').className = 'launch-btn firing';
+    document.getElementById('btnIcon').textContent = '■';
+    document.getElementById('btnLabel').textContent = 'ABORT';
+
+    let t = 0;
+    const dt = 0.03;
+
+    function step() {
+        const x = vx0 * t;
+        const y = vy0 * t - 0.5 * g * t * t;
+        const vx = vx0;
+        const vy = vy0 - g * t;
+
+        if (y < -0.1 && t > 0.1) {
+            // landing
+            isFiring = false;
+            setStatus('idle');
+            document.getElementById('launchBtn').className = 'launch-btn reset';
+            document.getElementById('btnIcon').textContent = '↺';
+            document.getElementById('btnLabel').textContent = 'RESET';
+
+            // draw impact flash
+            drawScene();
+            const scale = getScale();
+            const ox = ORIGIN_X, oy = getOriginY();
+            const impX = ox + x * scale;
+            const impY = oy;
+            ctx.save();
+            ctx.fillStyle = 'rgba(255,68,68,0.3)';
+            ctx.beginPath();
+            ctx.arc(impX, impY, 20, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+
+            document.getElementById('hudVx').textContent = vx.toFixed(1);
+            document.getElementById('hudVy').textContent = vy.toFixed(1);
+            return;
+        }
+
+        currentPath.push([x, y]);
+        drawScene(x, y, vx, vy);
+        updateHUD(x, y, vx, vy, theoretical);
+
+        t += dt;
+        animId = requestAnimationFrame(step);
+    }
+
+    requestAnimationFrame(step);
+}
+
+function reset() {
+    if (animId) cancelAnimationFrame(animId);
+    isFiring = false;
+    currentPath = [];
+    setStatus('');
+    document.getElementById('launchBtn').className = 'launch-btn';
+    document.getElementById('btnIcon').textContent = '▶';
+    document.getElementById('btnLabel').textContent = 'LAUNCH';
+    document.getElementById('hudX').textContent = '0.0';
+    document.getElementById('hudY').textContent = '0.0';
+    document.getElementById('hudVx').textContent = '—';
+    document.getElementById('hudVy').textContent = '—';
+    drawIdle();
+    updatePreview();
+}
+
+document.getElementById('launchBtn').onclick = () => {
+    if (!isFiring && document.getElementById('btnLabel').textContent === 'RESET') {
+        reset();
+    } else if (!isFiring) {
+        launch();
+    } else {
+        // abort
+        if (animId) cancelAnimationFrame(animId);
+        isFiring = false;
+        setStatus('idle');
+        document.getElementById('launchBtn').className = 'launch-btn reset';
+        document.getElementById('btnIcon').textContent = '↺';
+        document.getElementById('btnLabel').textContent = 'RESET';
+    }
+};
+
+// Init
+window.addEventListener('resize', resize);
+resize();
+
+// Initial HUD values
+const initG = document.getElementById('gravity').value.split('|');
+document.getElementById('hudG').textContent = Number(initG[0]).toFixed(2);
+document.getElementById('hudEnv').textContent = initG[1];
+document.getElementById('gravDesc').textContent = ENVS[initG[1]]?.desc || '';
+updatePreview();
 </script>
 </body>
 </html>

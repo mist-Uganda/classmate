@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MIST | UNEB Resources</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ink: #0d1b2a;
+            --navy: #1a3254;
+            --royal: #1e4d8c;
+            --gold: #c9a84c;
+            --gold-light: #e8c97a;
+            --cream: #faf8f4;
+            --mist: #eef1f6;
+            --border: #d8dde8;
+            --text: #2d3a4a;
+            --muted: #7a8a9a;
+            --white: #ffffff;
+            --success: #2d7a5c;
+            --danger: #b94040;
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--cream);
+            color: var(--text);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* ── SIDE NAV ── */
+        .overlay {
+            position: fixed; inset: 0;
+            background: rgba(13,27,42,0.55);
+            backdrop-filter: blur(4px);
+            z-index: 1500;
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.35s ease;
+        }
+        .overlay.open { opacity: 1; pointer-events: all; }
+
+        .side-nav {
+            position: fixed; top: 0; left: 0;
+            height: 100%; width: 300px;
+            background: var(--ink);
+            z-index: 2000;
+            transform: translateX(-100%);
+            transition: transform 0.4s cubic-bezier(.77,0,.18,1);
+            display: flex; flex-direction: column;
+            padding: 0;
+        }
+        .side-nav.open { transform: translateX(0); }
+
+        .nav-header {
+            padding: 28px 28px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .nav-logo-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem; font-weight: 900;
+            color: var(--gold); letter-spacing: 2px;
+        }
+        .close-btn {
+            width: 36px; height: 36px;
+            background: rgba(255,255,255,0.06);
+            border: none; border-radius: 8px;
+            color: white; font-size: 1.3rem;
+            cursor: pointer; display: flex;
+            align-items: center; justify-content: center;
+            transition: background 0.2s;
+        }
+        .close-btn:hover { background: rgba(255,255,255,0.14); }
+
+        .nav-links { padding: 20px 0; flex: 1; }
+        .nav-links a {
+            display: flex; align-items: center; gap: 14px;
+            padding: 14px 28px;
+            color: rgba(255,255,255,0.72);
+            text-decoration: none;
+            font-size: 0.95rem; font-weight: 500;
+            letter-spacing: 0.3px;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+        .nav-links a:hover {
+            color: var(--gold-light);
+            background: rgba(201,168,76,0.08);
+            border-left-color: var(--gold);
+        }
+        .nav-links a .nav-icon { font-size: 1.1rem; width: 20px; text-align: center; }
+
+        .nav-footer {
+            padding: 20px 28px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            color: rgba(255,255,255,0.3);
+            font-size: 0.78rem;
+        }
+
+        /* ── HEADER ── */
+        header {
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            padding: 0 5%;
+            height: 68px;
+            display: flex; align-items: center; justify-content: space-between;
+            position: sticky; top: 0; z-index: 900;
+            box-shadow: 0 1px 20px rgba(13,27,42,0.06);
+        }
+
+        .menu-btn {
+            width: 42px; height: 42px;
+            background: none; border: 1.5px solid var(--border);
+            border-radius: 10px; cursor: pointer;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center; gap: 5px;
+            transition: border-color 0.2s, background 0.2s;
+        }
+        .menu-btn span {
+            display: block; width: 18px; height: 1.5px;
+            background: var(--navy); transition: 0.2s;
+        }
+        .menu-btn:hover { background: var(--mist); border-color: var(--royal); }
+
+        .header-brand {
+            display: flex; align-items: center; gap: 10px;
+            text-decoration: none;
+        }
+        .brand-badge {
+            width: 40px; height: 40px;
+            background: var(--navy);
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .brand-badge span {
+            font-family: 'Playfair Display', serif;
+            color: var(--gold);
+            font-weight: 900; font-size: 1rem;
+            letter-spacing: 1px;
+        }
+        .brand-text {
+            font-family: 'Playfair Display', serif;
+            color: var(--navy); font-weight: 700;
+            font-size: 1.15rem; letter-spacing: 0.5px;
+        }
+
+        .header-pill {
+            background: var(--mist);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 5px 14px;
+            font-size: 0.78rem;
+            color: var(--royal);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        /* ── HERO BANNER ── */
+        .hero {
+            background: linear-gradient(135deg, var(--ink) 0%, var(--navy) 55%, #243f6b 100%);
+            padding: 64px 5% 72px;
+            position: relative; overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute; inset: 0;
+            background-image:
+                radial-gradient(circle at 80% 20%, rgba(201,168,76,0.12) 0%, transparent 50%),
+                radial-gradient(circle at 10% 80%, rgba(30,77,140,0.3) 0%, transparent 50%);
+        }
+        .hero::after {
+            content: '';
+            position: absolute; bottom: 0; left: 0; right: 0;
+            height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent);
+        }
+        .hero-inner {
+            max-width: 1100px; margin: auto;
+            position: relative; z-index: 1;
+        }
+        .hero-tag {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: rgba(201,168,76,0.15);
+            border: 1px solid rgba(201,168,76,0.3);
+            border-radius: 20px;
+            padding: 4px 14px;
+            color: var(--gold-light);
+            font-size: 0.75rem; font-weight: 600;
+            letter-spacing: 1.5px; text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+        .hero-tag::before { content: '●'; font-size: 0.5rem; }
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            font-weight: 900; color: var(--white);
+            line-height: 1.18; margin-bottom: 14px;
+        }
+        .hero h1 em {
+            font-style: normal; color: var(--gold);
+        }
+        .hero p {
+            color: rgba(255,255,255,0.62);
+            font-size: 1.05rem; max-width: 520px;
+        }
+        .hero-stats {
+            display: flex; gap: 36px;
+            margin-top: 40px; flex-wrap: wrap;
+        }
+        .stat {
+            display: flex; flex-direction: column;
+        }
+        .stat-num {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem; font-weight: 700;
+            color: var(--gold);
+        }
+        .stat-label {
+            font-size: 0.78rem; color: rgba(255,255,255,0.45);
+            letter-spacing: 0.5px; text-transform: uppercase;
+        }
+
+        /* ── MAIN LAYOUT ── */
+        .page-body {
+            max-width: 1100px; margin: 0 auto;
+            padding: 52px 5% 80px;
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 36px;
+            align-items: start;
+        }
+
+        /* ── SECTION TITLES ── */
+        .section-label {
+            display: flex; align-items: center; gap: 10px;
+            margin-bottom: 22px;
+        }
+        .section-label h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.35rem; font-weight: 700;
+            color: var(--ink);
+        }
+        .section-label .label-line {
+            flex: 1; height: 1px; background: var(--border);
+        }
+        .section-label .label-count {
+            font-size: 0.78rem; font-weight: 600;
+            color: var(--muted); background: var(--mist);
+            border: 1px solid var(--border); border-radius: 12px;
+            padding: 2px 10px;
+        }
+
+        /* ── FILTERS ── */
+        .filters {
+            display: flex; gap: 10px; flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        .filter-btn {
+            padding: 7px 16px;
+            border-radius: 20px;
+            border: 1.5px solid var(--border);
+            background: var(--white);
+            color: var(--text);
+            font-size: 0.84rem; font-weight: 500;
+            cursor: pointer; transition: all 0.2s;
+            font-family: 'DM Sans', sans-serif;
+        }
+        .filter-btn:hover { border-color: var(--royal); color: var(--royal); }
+        .filter-btn.active {
+            background: var(--navy);
+            border-color: var(--navy);
+            color: var(--white);
+        }
+
+        /* ── SEARCH BAR ── */
+        .search-wrap {
+            position: relative; margin-bottom: 24px;
+        }
+        .search-wrap .icon {
+            position: absolute; left: 14px; top: 50%;
+            transform: translateY(-50%);
+            color: var(--muted); font-size: 1rem; pointer-events: none;
+        }
+        .search-input {
+            width: 100%; padding: 11px 14px 11px 40px;
+            border: 1.5px solid var(--border); border-radius: 10px;
+            background: var(--white); color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.9rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            outline: none;
+        }
+        .search-input:focus {
+            border-color: var(--royal);
+            box-shadow: 0 0 0 3px rgba(30,77,140,0.1);
+        }
+        .search-input::placeholder { color: var(--muted); }
+
+        /* ── PAPER CARDS ── */
+        #paper-list {
+            display: flex; flex-direction: column; gap: 10px;
+        }
+
+        .paper-card {
+            background: var(--white);
+            border: 1.5px solid var(--border);
+            border-radius: 12px;
+            padding: 16px 20px;
+            display: flex; align-items: center; gap: 16px;
+            transition: box-shadow 0.2s, border-color 0.2s, transform 0.15s;
+            animation: fadeSlide 0.3s ease both;
+        }
+        .paper-card:hover {
+            box-shadow: 0 4px 20px rgba(13,27,42,0.09);
+            border-color: #bec8d8;
+            transform: translateY(-1px);
+        }
+
+        @keyframes fadeSlide {
+            from { opacity: 0; transform: translateY(10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .paper-icon {
+            width: 44px; height: 44px; flex-shrink: 0;
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem;
+        }
+        .paper-icon.uce  { background: #eef4ff; }
+        .paper-icon.uace { background: #fff8e8; }
+
+        .paper-meta { flex: 1; min-width: 0; }
+        .paper-subject {
+            font-weight: 600; font-size: 0.97rem;
+            color: var(--ink); margin-bottom: 3px;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .paper-sub {
+            font-size: 0.8rem; color: var(--muted);
+            display: flex; align-items: center; gap: 8px;
+        }
+        .pill {
+            display: inline-block;
+            padding: 2px 8px; border-radius: 10px;
+            font-size: 0.72rem; font-weight: 600;
+            letter-spacing: 0.4px;
+        }
+        .pill.uce  { background: #dce8ff; color: #1e4d8c; }
+        .pill.uace { background: #fef0cc; color: #8a6200; }
+
+        .paper-year {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.15rem; font-weight: 700;
+            color: var(--navy); flex-shrink: 0;
+        }
+
+        .dl-btn {
+            display: flex; align-items: center; gap: 6px;
+            padding: 8px 16px;
+            background: var(--navy); color: var(--white);
+            border: none; border-radius: 8px;
+            font-size: 0.82rem; font-weight: 600;
+            cursor: pointer; text-decoration: none;
+            transition: background 0.2s, transform 0.15s;
+            white-space: nowrap; flex-shrink: 0;
+        }
+        .dl-btn:hover { background: var(--royal); transform: translateY(-1px); }
+        .dl-btn .dl-icon { font-size: 0.9rem; }
+
+        .delete-btn {
+            width: 32px; height: 32px; flex-shrink: 0;
+            background: none; border: 1.5px solid #eee;
+            border-radius: 8px; color: #bbb;
+            cursor: pointer; font-size: 0.9rem;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s;
+        }
+        .delete-btn:hover { background: #fff0f0; border-color: #f0c0c0; color: var(--danger); }
+
+        /* ── EMPTY STATE ── */
+        .empty-state {
+            text-align: center; padding: 60px 20px;
+            background: var(--white); border: 1.5px dashed var(--border);
+            border-radius: 14px;
+        }
+        .empty-icon { font-size: 3rem; margin-bottom: 14px; }
+        .empty-state h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--ink); font-size: 1.1rem; margin-bottom: 8px;
+        }
+        .empty-state p { color: var(--muted); font-size: 0.88rem; }
+
+        /* ── UPLOAD CARD ── */
+        .upload-card {
+            background: var(--white);
+            border: 1.5px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            position: sticky; top: 84px;
+        }
+        .upload-card-head {
+            background: linear-gradient(135deg, var(--navy), var(--ink));
+            padding: 22px 24px 20px;
+        }
+        .upload-card-head h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--white); font-size: 1.1rem; margin-bottom: 4px;
+        }
+        .upload-card-head p {
+            color: rgba(255,255,255,0.5); font-size: 0.8rem;
+        }
+        .upload-card-body { padding: 24px; }
+
+        .form-group { margin-bottom: 16px; }
+        .form-label {
+            display: block;
+            font-size: 0.8rem; font-weight: 600;
+            color: var(--text); margin-bottom: 6px;
+            letter-spacing: 0.3px;
+        }
+        .form-control {
+            width: 100%; padding: 10px 13px;
+            border: 1.5px solid var(--border);
+            border-radius: 9px;
+            background: var(--cream);
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.88rem;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .form-control:focus {
+            border-color: var(--royal);
+            box-shadow: 0 0 0 3px rgba(30,77,140,0.1);
+            background: var(--white);
+        }
+        select.form-control { cursor: pointer; }
+
+        .file-drop {
+            border: 2px dashed var(--border);
+            border-radius: 10px;
+            padding: 22px 16px;
+            text-align: center;
+            background: var(--cream);
+            cursor: pointer; transition: all 0.2s;
+            position: relative;
+        }
+        .file-drop:hover, .file-drop.dragover {
+            border-color: var(--royal);
+            background: #f0f4ff;
+        }
+        .file-drop input {
+            position: absolute; inset: 0; opacity: 0;
+            cursor: pointer; width: 100%; height: 100%;
+        }
+        .file-drop-icon { font-size: 1.8rem; margin-bottom: 8px; }
+        .file-drop p { font-size: 0.82rem; color: var(--muted); }
+        .file-drop strong { color: var(--royal); }
+        .file-name-display {
+            margin-top: 8px; font-size: 0.78rem; color: var(--success);
+            font-weight: 600; display: none;
+        }
+
+        .submit-btn {
+            width: 100%; padding: 12px;
+            background: linear-gradient(135deg, var(--navy), var(--royal));
+            color: var(--white);
+            border: none; border-radius: 10px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.92rem; font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            margin-top: 6px;
+        }
+        .submit-btn:hover {
+            opacity: 0.9; transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(26,50,84,0.3);
+        }
+        .submit-btn:active { transform: translateY(0); }
+
+        /* ── TOAST ── */
+        .toast {
+            position: fixed; bottom: 30px; right: 30px;
+            background: var(--ink); color: var(--white);
+            padding: 13px 20px; border-radius: 12px;
+            font-size: 0.87rem; font-weight: 500;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+            transform: translateY(80px); opacity: 0;
+            transition: all 0.35s cubic-bezier(.25,.8,.25,1);
+            z-index: 9999; display: flex; align-items: center; gap: 10px;
+            border-left: 4px solid var(--gold);
+        }
+        .toast.show { transform: translateY(0); opacity: 1; }
+        .toast.error { border-left-color: var(--danger); }
+
+        /* ── FOOTER ── */
+        footer {
+            background: var(--ink);
+            border-top: 1px solid rgba(255,255,255,0.06);
+            padding: 36px 5%;
+            text-align: center;
+        }
+        .footer-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem; font-weight: 900;
+            color: var(--gold); letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+        .footer-sub { color: rgba(255,255,255,0.35); font-size: 0.82rem; }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 760px) {
+            .page-body {
+                grid-template-columns: 1fr;
+                padding: 32px 5% 60px;
+            }
+            .upload-card { position: static; order: -1; }
+            .hero-stats { gap: 24px; }
+            .paper-year { display: none; }
+            header .header-pill { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- OVERLAY -->
+<div class="overlay" id="overlay" onclick="closeNav()"></div>
+
+<!-- SIDE NAV -->
+<nav class="side-nav" id="sideNav">
+    <div class="nav-header">
+        <span class="nav-logo-text">MIST</span>
+        <button class="close-btn" onclick="closeNav()">✕</button>
+    </div>
+    <div class="nav-links">
+        <a href="mist4.html"><span class="nav-icon">🏠</span> Home</a>
+        <a href="#library" onclick="closeNav()"><span class="nav-icon">📚</span> Paper Library</a>
+        <a href="#upload" onclick="closeNav()"><span class="nav-icon">⬆️</span> Submit Paper</a>
+    </div>
+    <div class="nav-footer">© 2026 MIST · Mpigi, Uganda</div>
+</nav>
+
+<!-- HEADER -->
+<header>
+    <button class="menu-btn" onclick="openNav()" aria-label="Menu">
+        <span></span><span></span><span></span>
+    </button>
+    <a href="mist4.html" class="header-brand">
+        <div class="brand-badge"><span>M</span></div>
+        <span class="brand-text">MIST</span>
+    </a>
+    <div class="header-pill">UNEB Resources</div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-inner">
+        <div class="hero-tag">Academic Excellence</div>
+        <h1>UNEB Past <em>Papers</em><br>Library</h1>
+        <p>Access and contribute past examination papers for UCE and UACE levels. A shared resource for every MIST student.</p>
+        <div class="hero-stats">
+            <div class="stat">
+                <span class="stat-num" id="totalCount">0</span>
+                <span class="stat-label">Papers</span>
+            </div>
+            <div class="stat">
+                <span class="stat-num" id="uceCount">0</span>
+                <span class="stat-label">UCE</span>
+            </div>
+            <div class="stat">
+                <span class="stat-num" id="uaceCount">0</span>
+                <span class="stat-label">UACE</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- MAIN CONTENT -->
+<div class="page-body">
+    <!-- LIBRARY -->
+    <main id="library">
+        <div class="section-label">
+            <h2>Past Papers</h2>
+            <span class="label-line"></span>
+            <span class="label-count" id="filterCount">0 papers</span>
+        </div>
+
+        <div class="search-wrap">
+            <span class="icon">🔍</span>
+            <input class="search-input" type="text" id="searchInput" placeholder="Search by subject or year…">
+        </div>
+
+        <div class="filters">
+            <button class="filter-btn active" data-filter="ALL">All</button>
+            <button class="filter-btn" data-filter="UCE">UCE</button>
+            <button class="filter-btn" data-filter="UACE">UACE</button>
+        </div>
+
+        <div id="paper-list"></div>
+    </main>
+
+    <!-- UPLOAD FORM -->
+    <aside id="upload">
+        <div class="upload-card">
+            <div class="upload-card-head">
+                <h3>Add a Paper</h3>
+                <p>Contribute to the shared library</p>
+            </div>
+            <div class="upload-card-body">
+                <div class="form-group">
+                    <label class="form-label">Subject Name</label>
+                    <input class="form-control" type="text" id="subject" placeholder="e.g. Mathematics">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Examination Level</label>
+                    <select class="form-control" id="level">
+                        <option value="UCE">UCE – Uganda Certificate of Education</option>
+                        <option value="UACE">UACE – Uganda Advanced Certificate</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Year</label>
+                    <input class="form-control" type="number" id="year" placeholder="e.g. 2023" min="1990" max="2030">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Paper File</label>
+                    <div class="file-drop" id="fileDrop">
+                        <input type="file" id="paper-file" accept=".pdf,.doc,.docx,image/*">
+                        <div class="file-drop-icon">📄</div>
+                        <p><strong>Click to upload</strong> or drag & drop</p>
+                        <p>PDF, Word, or Image files</p>
+                        <div class="file-name-display" id="fileNameDisplay"></div>
+                    </div>
+                </div>
+                <button class="submit-btn" onclick="submitPaper()">
+                    <span>⬆</span> Add to Library
+                </button>
+            </div>
+        </div>
+    </aside>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- FOOTER -->
+<footer>
+    <div class="footer-brand">MIST</div>
+    <div class="footer-sub">Mpigi Integrated Secondary & Technical · Mpigi, Uganda · © 2026</div>
+</footer>
+
+<script>
+    /* ── NAV ── */
+    function openNav() {
+        document.getElementById('sideNav').classList.add('open');
+        document.getElementById('overlay').classList.add('open');
+    }
+    function closeNav() {
+        document.getElementById('sideNav').classList.remove('open');
+        document.getElementById('overlay').classList.remove('open');
+    }
+
+    /* ── TOAST ── */
+    function showToast(msg, isError = false) {
+        const t = document.getElementById('toast');
+        t.textContent = msg;
+        t.className = 'toast show' + (isError ? ' error' : '');
+        setTimeout(() => t.className = 'toast', 3200);
+    }
+
+    /* ── STATE ── */
+    let papers = [];
+    let activeFilter = 'ALL';
+    let searchQuery = '';
+
+    /* ── FILE DROP ── */
+    const fileDrop = document.getElementById('fileDrop');
+    const fileInput = document.getElementById('paper-file');
+    const fileNameDisplay = document.getElementById('fileNameDisplay');
+
+    fileInput.addEventListener('change', () => {
+        if (fileInput.files[0]) {
+            fileNameDisplay.textContent = '✓ ' + fileInput.files[0].name;
+            fileNameDisplay.style.display = 'block';
+        }
+    });
+
+    fileDrop.addEventListener('dragover', e => { e.preventDefault(); fileDrop.classList.add('dragover'); });
+    fileDrop.addEventListener('dragleave', () => fileDrop.classList.remove('dragover'));
+    fileDrop.addEventListener('drop', e => {
+        e.preventDefault(); fileDrop.classList.remove('dragover');
+        if (e.dataTransfer.files[0]) {
+            fileInput.files = e.dataTransfer.files;
+            fileNameDisplay.textContent = '✓ ' + e.dataTransfer.files[0].name;
+            fileNameDisplay.style.display = 'block';
+        }
+    });
+
+    /* ── SUBMIT ── */
+    function submitPaper() {
+        const subject = document.getElementById('subject').value.trim();
+        const level   = document.getElementById('level').value;
+        const year    = document.getElementById('year').value.trim();
+        const file    = fileInput.files[0];
+
+        if (!subject || !year || !file) {
+            showToast('Please fill in all fields and choose a file.', true);
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const paper = { subject, level, year, fileData: e.target.result, fileName: file.name };
+            try {
+                papers.unshift(paper);
+                localStorage.setItem('mistPapers', JSON.stringify(papers));
+                renderAll();
+                // reset
+                document.getElementById('subject').value = '';
+                document.getElementById('year').value = '';
+                fileInput.value = '';
+                fileNameDisplay.style.display = 'none';
+                showToast('📚 Paper added successfully!');
+            } catch (err) {
+                showToast('Storage limit reached. Try a smaller file.', true);
+            }
+        };
+        reader.readAsDataURL(file);
+    }
+
+    /* ── FILTERS ── */
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            activeFilter = btn.dataset.filter;
+            renderAll();
+        });
+    });
+
+    document.getElementById('searchInput').addEventListener('input', e => {
+        searchQuery = e.target.value.trim().toLowerCase();
+        renderAll();
+    });
+
+    /* ── RENDER ── */
+    function renderAll() {
+        const list = document.getElementById('paper-list');
+        list.innerHTML = '';
+
+        const filtered = papers.filter(p => {
+            const matchFilter = activeFilter === 'ALL' || p.level === activeFilter;
+            const matchSearch = !searchQuery ||
+                p.subject.toLowerCase().includes(searchQuery) ||
+                p.year.toString().includes(searchQuery);
+            return matchFilter && matchSearch;
+        });
+
+        document.getElementById('filterCount').textContent =
+            filtered.length + ' paper' + (filtered.length !== 1 ? 's' : '');
+
+        if (filtered.length === 0) {
+            list.innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-icon">📭</div>
+                    <h3>No papers found</h3>
+                    <p>Try adjusting your filters, or be the first to add one!</p>
+                </div>`;
+            return;
+        }
+
+        filtered.forEach((p, i) => {
+            const card = document.createElement('div');
+            card.className = 'paper-card';
+            card.style.animationDelay = (i * 40) + 'ms';
+            const levelClass = p.level.toLowerCase();
+            card.innerHTML = `
+                <div class="paper-icon ${levelClass}">
+                    ${p.level === 'UCE' ? '📘' : '📙'}
+                </div>
+                <div class="paper-meta">
+                    <div class="paper-subject">${escHtml(p.subject)}</div>
+                    <div class="paper-sub">
+                        <span class="pill ${levelClass}">${p.level}</span>
+                        <span>${escHtml(p.fileName || 'Document')}</span>
+                    </div>
+                </div>
+                <div class="paper-year">${escHtml(p.year)}</div>
+                <a class="dl-btn" href="${p.fileData}" download="${escHtml(p.fileName)}">
+                    <span class="dl-icon">⬇</span> Download
+                </a>
+                <button class="delete-btn" title="Remove" onclick="deletePaper(${papers.indexOf(p)})">✕</button>
+            `;
+            list.appendChild(card);
+        });
+
+        updateStats();
+    }
+
+    function deletePaper(idx) {
+        if (!confirm('Remove this paper from the library?')) return;
+        papers.splice(idx, 1);
+        try { localStorage.setItem('mistPapers', JSON.stringify(papers)); } catch(e) {}
+        renderAll();
+        showToast('Paper removed.');
+    }
+
+    function updateStats() {
+        const uce  = papers.filter(p => p.level === 'UCE').length;
+        const uace = papers.filter(p => p.level === 'UACE').length;
+        animateCount('totalCount', papers.length);
+        animateCount('uceCount', uce);
+        animateCount('uaceCount', uace);
+    }
+
+    function animateCount(id, target) {
+        const el = document.getElementById(id);
+        const curr = parseInt(el.textContent) || 0;
+        const step = Math.ceil(Math.abs(target - curr) / 12) || 1;
+        let v = curr;
+        const t = setInterval(() => {
+            v = v < target ? Math.min(v + step, target) : Math.max(v - step, target);
+            el.textContent = v;
+            if (v === target) clearInterval(t);
+        }, 40);
+    }
+
+    function escHtml(str) {
+        return String(str)
+            .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+            .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    /* ── INIT ── */
+    window.addEventListener('DOMContentLoaded', () => {
+        try {
+            papers = JSON.parse(localStorage.getItem('mistPapers')) || [];
+        } catch(e) { papers = []; }
+        renderAll();
+    });
+</script>
+</body>
+</html>

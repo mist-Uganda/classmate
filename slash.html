@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Orion — Loading</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --blue-deep:   #0b2d6e;
+    --blue-mid:    #1756b8;
+    --blue-bright: #2e8de8;
+    --blue-light:  #73bfff;
+    --white:       #ffffff;
+  }
+
+  body {
+    background: var(--white);
+    width: 100vw; height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    overflow: hidden;
+    font-family: 'Barlow', sans-serif;
+  }
+
+  /* ── transition overlay ── */
+  .transition-overlay {
+    position: fixed; inset: 0;
+    background: var(--blue-deep);
+    z-index: 9999;
+    pointer-events: none;
+    clip-path: inset(0 100% 0 0);
+    transition: clip-path 0.65s cubic-bezier(0.76, 0, 0.24, 1);
+  }
+  .transition-overlay.go {
+    clip-path: inset(0 0% 0 0);
+  }
+
+  /* ── star field ── */
+  .stars { position: fixed; inset: 0; pointer-events: none; }
+  .star {
+    position: absolute;
+    border-radius: 50%;
+    background: var(--blue-mid);
+    animation: twinkle var(--d) ease-in-out infinite alternate;
+    opacity: 0;
+  }
+  @keyframes twinkle { from { opacity: 0; transform: scale(0.6); } to { opacity: var(--op); transform: scale(1); } }
+
+  /* ── logo wrapper ── */
+  .logo-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+    animation: fadeUp 0.9s cubic-bezier(.22,1,.36,1) both;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(32px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── belt (3 stars above text) ── */
+  .belt {
+    display: flex; gap: 14px; align-items: center;
+    animation: fadeUp 0.9s 0.15s cubic-bezier(.22,1,.36,1) both;
+  }
+  .belt-star {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--blue-bright);
+    box-shadow: 0 0 10px 3px var(--blue-bright);
+    animation: pulse 2.2s ease-in-out infinite;
+  }
+  .belt-star:nth-child(2) { animation-delay: 0.35s; width: 8px; height: 8px; }
+  .belt-star:nth-child(3) { animation-delay: 0.7s; }
+  @keyframes pulse {
+    0%,100% { box-shadow: 0 0 8px 2px var(--blue-bright); opacity:0.85; }
+    50%      { box-shadow: 0 0 18px 6px var(--blue-light); opacity:1; }
+  }
+
+  /* ── wordmark ── */
+  .wordmark {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(72px, 16vw, 140px);
+    letter-spacing: 0.18em;
+    line-height: 1;
+    color: transparent;
+    background: linear-gradient(175deg, var(--blue-bright) 0%, var(--blue-mid) 45%, var(--blue-deep) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    position: relative;
+    animation: fadeUp 0.9s 0.05s cubic-bezier(.22,1,.36,1) both;
+    filter: drop-shadow(0 2px 18px rgba(30,100,220,0.18));
+  }
+
+  /* draw-on stroke effect */
+  .wordmark::after {
+    content: 'ORION';
+    position: absolute; inset: 0;
+    color: transparent;
+    -webkit-text-stroke: 1.5px var(--blue-light);
+    opacity: 0.35;
+  }
+
+  /* ── divider line ── */
+  .divider {
+    width: 0;
+    height: 1.5px;
+    background: linear-gradient(90deg, transparent, var(--blue-bright), transparent);
+    border-radius: 2px;
+    animation: expandLine 1s 0.6s cubic-bezier(.22,1,.36,1) forwards;
+  }
+  @keyframes expandLine { to { width: 320px; } }
+
+  /* ── tagline ── */
+  .tagline {
+    font-size: 11px;
+    letter-spacing: 0.38em;
+    text-transform: uppercase;
+    color: var(--blue-mid);
+    opacity: 0;
+    animation: fadeUp 0.7s 1s ease forwards;
+  }
+
+  /* ── progress bar ── */
+  .loader-wrap {
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+    opacity: 0;
+    animation: fadeUp 0.7s 1.1s ease forwards;
+  }
+  .bar-track {
+    width: 200px; height: 2px;
+    background: rgba(21, 86, 184, 0.15);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--blue-mid), var(--blue-light));
+    border-radius: 2px;
+    width: 0;
+    animation: loadBar 2.4s 1.3s cubic-bezier(.4,0,.2,1) forwards;
+    box-shadow: 0 0 8px var(--blue-bright);
+  }
+  @keyframes loadBar { to { width: 100%; } }
+  .pct {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--blue-bright);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ── skip link ── */
+  .skip-link {
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(21, 86, 184, 0.45);
+    text-decoration: none;
+    opacity: 0;
+    animation: fadeUp 0.7s 1.5s ease forwards;
+    transition: color 0.2s;
+    border-bottom: 1px solid transparent;
+  }
+  .skip-link:hover { color: var(--blue-mid); border-bottom-color: var(--blue-mid); }
+</style>
+</head>
+<body>
+
+<!-- cool wipe-transition overlay -->
+<div class="transition-overlay" id="transitionOverlay"></div>
+
+<!-- star field -->
+<div class="stars" id="stars"></div>
+
+<!-- main content -->
+<div class="logo-wrap">
+  <div class="belt">
+    <div class="belt-star"></div>
+    <div class="belt-star"></div>
+    <div class="belt-star"></div>
+  </div>
+
+  <div class="wordmark">ORION</div>
+
+  <div class="divider"></div>
+  <p class="tagline">Navigate what's next</p>
+
+  <div class="loader-wrap">
+    <div class="bar-track"><div class="bar-fill" id="barFill"></div></div>
+    <span class="pct" id="pct">0%</span>
+  </div>
+
+  <a href="index.html" class="skip-link" id="skipLink">Skip →</a>
+</div>
+
+<script>
+  /* generate stars */
+  const starsEl = document.getElementById('stars');
+  for (let i = 0; i < 60; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    const size = Math.random() * 3 + 1;
+    s.style.cssText = `
+      width:${size}px; height:${size}px;
+      top:${Math.random()*100}%;
+      left:${Math.random()*100}%;
+      --d:${(Math.random()*2+1.5).toFixed(2)}s;
+      --op:${(Math.random()*0.25+0.08).toFixed(2)};
+      animation-delay:${(Math.random()*3).toFixed(2)}s;
+    `;
+    starsEl.appendChild(s);
+  }
+
+  /* percentage counter synced to CSS bar (2.4s fill starting at 1.3s) */
+  const pct = document.getElementById('pct');
+  const overlay = document.getElementById('transitionOverlay');
+  let start = null;
+  const duration = 2400;
+  const delay = 1300;
+  let redirected = false;
+
+  function navigateToHome() {
+    if (redirected) return;
+    redirected = true;
+
+    /* trigger the wipe */
+    overlay.classList.add('go');
+
+    /* after the wipe covers the screen, go to index */
+    setTimeout(() => {
+      window.location.href = 'index.html';
+    }, 680);
+  }
+
+  function tick(ts) {
+    if (!start) start = ts;
+    const elapsed = ts - start - delay;
+    if (elapsed < 0) { requestAnimationFrame(tick); return; }
+    const progress = Math.min(elapsed / duration, 1);
+    pct.textContent = Math.floor(progress * 100) + '%';
+    if (progress < 1) {
+      requestAnimationFrame(tick);
+    } else {
+      pct.textContent = '100%';
+      /* small pause so the user sees 100%, then transition */
+      setTimeout(navigateToHome, 200);
+    }
+  }
+  requestAnimationFrame(tick);
+
+  /* also allow skip link to use the same cool transition */
+  document.getElementById('skipLink').addEventListener('click', function(e) {
+    e.preventDefault();
+    navigateToHome();
+  });
+</script>
+</body>
+</html>
