@@ -1,638 +1,261 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MIST | Mpigi Innovators — STEM Hub Uganda</title>
-    <meta name="description" content="MIST (Mpigi Innovators) is Uganda's premier hub for high school innovators, competitive debaters, and future engineers.">
-    <meta name="keywords" content="MIST, Mpigi Innovators, STEM Uganda, high school innovators, UNEB papers, science fair ideas, scenario bank">
-    <meta name="author" content="Morgan">
-    <link rel="canonical" href="https://www.mist.ug/">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://www.mist.ug/">
-    <meta property="og:title" content="MIST | Mpigi Innovators — STEM Hub Uganda">
-    <meta property="og:description" content="Uganda's hub for high school innovators. Turn theory into technology.">
-    <meta property="og:image" content="https://www.mist.ug/logo.png">
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Orion — Loading</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4560205283207722" crossorigin="anonymous"></script>
-    <script type="application/ld+json">
-    {"@context":"https://schema.org","@type":"EducationalOrganization","name":"MIST | Mpigi Innovators","url":"https://www.mist.ug","logo":"https://www.mist.ug/logo.png","description":"Uganda's hub for high school innovators, competitive debaters, and future engineers.","address":{"@type":"PostalAddress","addressLocality":"Mpigi","addressCountry":"UG"}}
-    </script>
+  :root {
+    --blue-deep:   #0b2d6e;
+    --blue-mid:    #1756b8;
+    --blue-bright: #2e8de8;
+    --blue-light:  #73bfff;
+    --white:       #ffffff;
+  }
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+  body {
+    background: var(--white);
+    width: 100vw; height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    overflow: hidden;
+    font-family: 'Barlow', sans-serif;
+  }
 
-    <style>
-        :root {
-            --navy: #001a3a;
-            --navy-mid: #002a5c;
-            --blue: #0057b8;
-            --cyan: #00c2e0;
-            --gold: #f5c518;
-            --light-bg: #f0f4fa;
-            --white: #ffffff;
-            --text-dark: #0d1b2e;
-            --text-mid: #3a4f6b;
-            --text-light: #7a90aa;
-            --whatsapp: #25D366;
-            --radius: 16px;
-            --radius-sm: 8px;
-        }
+  /* ── transition overlay ── */
+  .transition-overlay {
+    position: fixed; inset: 0;
+    background: var(--blue-deep);
+    z-index: 9999;
+    pointer-events: none;
+    clip-path: inset(0 100% 0 0);
+    transition: clip-path 0.65s cubic-bezier(0.76, 0, 0.24, 1);
+  }
+  .transition-overlay.go {
+    clip-path: inset(0 0% 0 0);
+  }
 
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  /* ── star field ── */
+  .stars { position: fixed; inset: 0; pointer-events: none; }
+  .star {
+    position: absolute;
+    border-radius: 50%;
+    background: var(--blue-mid);
+    animation: twinkle var(--d) ease-in-out infinite alternate;
+    opacity: 0;
+  }
+  @keyframes twinkle { from { opacity: 0; transform: scale(0.6); } to { opacity: var(--op); transform: scale(1); } }
 
-        html { scroll-behavior: smooth; }
+  /* ── logo wrapper ── */
+  .logo-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+    animation: fadeUp 0.9s cubic-bezier(.22,1,.36,1) both;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(32px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
 
-        body {
-            font-family: 'DM Sans', sans-serif;
-            background: var(--light-bg);
-            color: var(--text-dark);
-            line-height: 1.65;
-            overflow-x: hidden;
-        }
+  /* ── belt (3 stars above text) ── */
+  .belt {
+    display: flex; gap: 14px; align-items: center;
+    animation: fadeUp 0.9s 0.15s cubic-bezier(.22,1,.36,1) both;
+  }
+  .belt-star {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--blue-bright);
+    box-shadow: 0 0 10px 3px var(--blue-bright);
+    animation: pulse 2.2s ease-in-out infinite;
+  }
+  .belt-star:nth-child(2) { animation-delay: 0.35s; width: 8px; height: 8px; }
+  .belt-star:nth-child(3) { animation-delay: 0.7s; }
+  @keyframes pulse {
+    0%,100% { box-shadow: 0 0 8px 2px var(--blue-bright); opacity:0.85; }
+    50%      { box-shadow: 0 0 18px 6px var(--blue-light); opacity:1; }
+  }
 
-        /* ── HEADER ── */
-        header {
-            position: sticky; top: 0; z-index: 900;
-            background: rgba(255,255,255,0.92);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            border-bottom: 1px solid rgba(0,87,184,0.08);
-            padding: 0 5%;
-            display: flex; align-items: center; justify-content: space-between;
-            height: 68px;
-            transition: box-shadow 0.3s;
-        }
-        header.scrolled { box-shadow: 0 4px 24px rgba(0,26,58,0.10); }
+  /* ── wordmark ── */
+  .wordmark {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(72px, 16vw, 140px);
+    letter-spacing: 0.18em;
+    line-height: 1;
+    color: transparent;
+    background: linear-gradient(175deg, var(--blue-bright) 0%, var(--blue-mid) 45%, var(--blue-deep) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    position: relative;
+    animation: fadeUp 0.9s 0.05s cubic-bezier(.22,1,.36,1) both;
+    filter: drop-shadow(0 2px 18px rgba(30,100,220,0.18));
+  }
 
-        .header-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-        .header-logo img { height: 42px; width: auto; }
-        .logo-wordmark { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.35rem; color: var(--navy); letter-spacing: -0.02em; }
-        .logo-wordmark span { color: var(--blue); }
+  /* draw-on stroke effect */
+  .wordmark::after {
+    content: 'ORION';
+    position: absolute; inset: 0;
+    color: transparent;
+    -webkit-text-stroke: 1.5px var(--blue-light);
+    opacity: 0.35;
+  }
 
-        .menu-btn {
-            background: none; border: none; cursor: pointer;
-            display: flex; flex-direction: column; gap: 5px; padding: 6px;
-        }
-        .menu-btn span {
-            display: block; width: 24px; height: 2px;
-            background: var(--navy); border-radius: 2px;
-            transition: all 0.3s;
-        }
+  /* ── divider line ── */
+  .divider {
+    width: 0;
+    height: 1.5px;
+    background: linear-gradient(90deg, transparent, var(--blue-bright), transparent);
+    border-radius: 2px;
+    animation: expandLine 1s 0.6s cubic-bezier(.22,1,.36,1) forwards;
+  }
+  @keyframes expandLine { to { width: 320px; } }
 
-        .header-actions { display: flex; align-items: center; gap: 12px; }
-        .header-cta {
-            font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 0.875rem;
-            padding: 9px 20px; border-radius: 50px;
-            background: var(--blue); color: white;
-            text-decoration: none; transition: background 0.2s, transform 0.15s;
-        }
-        .header-cta:hover { background: var(--navy); transform: translateY(-1px); }
+  /* ── tagline ── */
+  .tagline {
+    font-size: 11px;
+    letter-spacing: 0.38em;
+    text-transform: uppercase;
+    color: var(--blue-mid);
+    opacity: 0;
+    animation: fadeUp 0.7s 1s ease forwards;
+  }
 
-        /* ── SIDE NAV ── */
-        .overlay {
-            position: fixed; inset: 0; background: rgba(0,26,58,0.55);
-            z-index: 1500; opacity: 0; pointer-events: none;
-            transition: opacity 0.35s;
-            backdrop-filter: blur(3px);
-        }
-        .overlay.active { opacity: 1; pointer-events: all; }
+  /* ── progress bar ── */
+  .loader-wrap {
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+    opacity: 0;
+    animation: fadeUp 0.7s 1.1s ease forwards;
+  }
+  .bar-track {
+    width: 200px; height: 2px;
+    background: rgba(21, 86, 184, 0.15);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--blue-mid), var(--blue-light));
+    border-radius: 2px;
+    width: 0;
+    animation: loadBar 2.4s 1.3s cubic-bezier(.4,0,.2,1) forwards;
+    box-shadow: 0 0 8px var(--blue-bright);
+  }
+  @keyframes loadBar { to { width: 100%; } }
+  .pct {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--blue-bright);
+    font-variant-numeric: tabular-nums;
+  }
 
-        .side-nav {
-            position: fixed; top: 0; left: 0; height: 100%; width: 300px;
-            background: var(--navy);
-            z-index: 2000;
-            transform: translateX(-100%);
-            transition: transform 0.38s cubic-bezier(0.4,0,0.2,1);
-            display: flex; flex-direction: column;
-            padding: 0;
-            overflow-y: auto;
-        }
-        .side-nav.open { transform: translateX(0); }
-
-        .nav-header {
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 20px 24px; border-bottom: 1px solid rgba(255,255,255,0.08);
-        }
-        .nav-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.2rem; color: white; }
-        .nav-logo span { color: var(--cyan); }
-
-        .close-btn {
-            background: rgba(255,255,255,0.1); border: none; cursor: pointer;
-            color: white; font-size: 1.4rem; line-height: 1;
-            width: 36px; height: 36px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            transition: background 0.2s;
-        }
-        .close-btn:hover { background: rgba(255,255,255,0.2); }
-
-        .nav-links { padding: 16px 0; flex: 1; }
-        .nav-links a, .dropdown-btn {
-            display: flex; align-items: center; gap: 10px;
-            padding: 13px 24px; color: rgba(255,255,255,0.85);
-            font-family: 'DM Sans', sans-serif; font-size: 0.95rem; font-weight: 400;
-            text-decoration: none; border: none; background: none; width: 100%;
-            text-align: left; cursor: pointer; transition: color 0.2s, background 0.2s;
-            border-left: 3px solid transparent;
-        }
-        .nav-links a:hover, .dropdown-btn:hover { color: white; background: rgba(255,255,255,0.05); border-left-color: var(--cyan); }
-
-        .nav-section-label {
-            padding: 18px 24px 6px; font-size: 0.72rem; font-weight: 600;
-            text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.35);
-        }
-
-        .dropdown-btn { justify-content: space-between; }
-        .dropdown-btn .arrow { transition: transform 0.3s; font-size: 0.75rem; }
-        .dropdown-btn.open .arrow { transform: rotate(180deg); }
-
-        .dropdown-container { display: none; background: rgba(0,0,0,0.2); }
-        .dropdown-container.show { display: block; }
-        .dropdown-container a { padding-left: 44px; font-size: 0.88rem; color: rgba(255,255,255,0.7); }
-
-        .nav-footer { padding: 20px 24px; border-top: 1px solid rgba(255,255,255,0.08); }
-        .nav-footer p { color: rgba(255,255,255,0.4); font-size: 0.78rem; }
-
-        /* ── HERO ── */
-        #hero {
-            background: var(--navy);
-            min-height: 88vh;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            text-align: center;
-            padding: 80px 5% 70px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero-grid-bg {
-            position: absolute; inset: 0;
-            background-image:
-                linear-gradient(rgba(0,194,224,0.04) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0,194,224,0.04) 1px, transparent 1px);
-            background-size: 60px 60px;
-        }
-        .hero-glow {
-            position: absolute; width: 600px; height: 600px; border-radius: 50%;
-            background: radial-gradient(circle, rgba(0,87,184,0.35) 0%, transparent 70%);
-            top: -150px; right: -150px; pointer-events: none;
-        }
-        .hero-glow-2 {
-            position: absolute; width: 400px; height: 400px; border-radius: 50%;
-            background: radial-gradient(circle, rgba(0,194,224,0.15) 0%, transparent 70%);
-            bottom: -100px; left: -100px; pointer-events: none;
-        }
-
-        .hero-badge {
-            display: inline-flex; align-items: center; gap: 7px;
-            background: rgba(0,194,224,0.12); border: 1px solid rgba(0,194,224,0.25);
-            color: var(--cyan); font-size: 0.78rem; font-weight: 500; letter-spacing: 0.06em;
-            text-transform: uppercase; padding: 6px 16px; border-radius: 50px;
-            margin-bottom: 28px;
-            animation: fadeUp 0.6s ease both;
-        }
-        .hero-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--cyan); animation: pulse 2s infinite; }
-
-        @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.4)} }
-        @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
-
-        #hero h1 {
-            font-family: 'Syne', sans-serif; font-weight: 800;
-            font-size: clamp(2.4rem, 6vw, 4rem); line-height: 1.1;
-            color: white; margin-bottom: 20px; letter-spacing: -0.03em;
-            animation: fadeUp 0.6s 0.1s ease both;
-        }
-        #hero h1 em { font-style: normal; color: var(--cyan); }
-
-        #hero p {
-            max-width: 540px; margin: 0 auto 36px; color: rgba(255,255,255,0.65);
-            font-size: 1.05rem; font-weight: 300;
-            animation: fadeUp 0.6s 0.2s ease both;
-        }
-
-        .hero-cta-row {
-            display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;
-            animation: fadeUp 0.6s 0.3s ease both;
-        }
-        .btn-primary {
-            padding: 14px 30px; background: var(--blue); color: white;
-            border-radius: 50px; font-weight: 500; font-size: 0.95rem;
-            text-decoration: none; transition: all 0.2s; border: 2px solid var(--blue);
-            display: inline-flex; align-items: center; gap: 8px;
-        }
-        .btn-primary:hover { background: #0069d9; border-color: #0069d9; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,87,184,0.4); }
-
-        .btn-ghost {
-            padding: 14px 30px; background: transparent; color: white;
-            border-radius: 50px; font-weight: 500; font-size: 0.95rem;
-            text-decoration: none; transition: all 0.2s;
-            border: 2px solid rgba(255,255,255,0.25);
-        }
-        .btn-ghost:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.5); }
-
-        .hero-stats {
-            display: flex; gap: 40px; justify-content: center; flex-wrap: wrap;
-            margin-top: 60px; padding-top: 40px;
-            border-top: 1px solid rgba(255,255,255,0.08);
-            animation: fadeUp 0.6s 0.4s ease both;
-        }
-        .stat-item { text-align: center; }
-        .stat-num { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 2rem; color: white; }
-        .stat-num span { color: var(--cyan); }
-        .stat-label { font-size: 0.8rem; color: rgba(255,255,255,0.45); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 2px; }
-
-        /* ── SECTIONS ── */
-        section { padding: 80px 5%; max-width: 1140px; margin: 0 auto; }
-
-        .section-label {
-            display: inline-block; font-size: 0.75rem; font-weight: 600;
-            text-transform: uppercase; letter-spacing: 0.1em;
-            color: var(--blue); margin-bottom: 10px;
-        }
-        .section-title {
-            font-family: 'Syne', sans-serif; font-weight: 800;
-            font-size: clamp(1.7rem, 3vw, 2.4rem); color: var(--navy);
-            letter-spacing: -0.025em; margin-bottom: 16px;
-        }
-        .section-desc { color: var(--text-mid); max-width: 520px; font-size: 0.98rem; line-height: 1.7; }
-
-        .section-header { margin-bottom: 48px; }
-        .section-header.center { text-align: center; }
-        .section-header.center .section-desc { margin: 0 auto; }
-
-        /* ── WHAT WE DO CARDS ── */
-        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
-
-        .feature-card {
-            background: white; border-radius: var(--radius);
-            padding: 28px 26px;
-            border: 1px solid rgba(0,87,184,0.07);
-            transition: all 0.25s;
-            position: relative; overflow: hidden;
-        }
-        .feature-card::before {
-            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
-            background: linear-gradient(90deg, var(--blue), var(--cyan));
-            transform: scaleX(0); transform-origin: left;
-            transition: transform 0.3s;
-        }
-        .feature-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,87,184,0.10); }
-        .feature-card:hover::before { transform: scaleX(1); }
-
-        .card-icon {
-            width: 46px; height: 46px; border-radius: 12px;
-            background: linear-gradient(135deg, rgba(0,87,184,0.1), rgba(0,194,224,0.1));
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.3rem; margin-bottom: 18px;
-        }
-        .feature-card h3 {
-            font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.05rem;
-            color: var(--navy); margin-bottom: 10px;
-        }
-        .feature-card p { color: var(--text-mid); font-size: 0.88rem; line-height: 1.65; }
-
-        /* ── GATEWAY TABLE ── */
-        #gateways { background: var(--navy); border-radius: 24px; max-width: 1140px; }
-        #gateways .section-label { color: var(--cyan); }
-        #gateways .section-title { color: white; }
-        #gateways .section-desc { color: rgba(255,255,255,0.55); }
-
-        .gateway-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; margin-top: 8px; }
-
-        .gateway-card {
-            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);
-            border-radius: var(--radius); padding: 26px 24px;
-            transition: all 0.25s; cursor: default;
-        }
-        .gateway-card:hover { background: rgba(255,255,255,0.08); border-color: rgba(0,194,224,0.3); }
-
-        .gateway-number {
-            font-family: 'Syne', sans-serif; font-weight: 800; font-size: 2.5rem;
-            color: rgba(0,194,224,0.2); line-height: 1; margin-bottom: 14px;
-        }
-        .gateway-card h3 {
-            font-family: 'Syne', sans-serif; font-weight: 700; color: white;
-            font-size: 1rem; margin-bottom: 8px;
-        }
-        .gateway-card p { color: rgba(255,255,255,0.5); font-size: 0.86rem; line-height: 1.6; }
-
-        /* ── SUPPORT SECTION ── */
-        .support-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
-
-        .support-card {
-            background: white; border-radius: var(--radius);
-            padding: 36px 32px; border: 1px solid rgba(0,87,184,0.07);
-        }
-        .support-card h2 {
-            font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.4rem;
-            color: var(--navy); margin-bottom: 10px;
-        }
-        .support-card p { color: var(--text-mid); font-size: 0.9rem; margin-bottom: 24px; line-height: 1.65; }
-
-        .action-btn {
-            display: flex; align-items: center; justify-content: center; gap: 9px;
-            width: 100%; padding: 14px 20px; border-radius: 12px;
-            font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 0.9rem;
-            text-decoration: none; cursor: pointer; border: none;
-            transition: all 0.2s; margin-bottom: 12px;
-        }
-        .action-btn:last-child { margin-bottom: 0; }
-        .action-btn-primary { background: var(--navy); color: white; }
-        .action-btn-primary:hover { background: var(--blue); transform: translateY(-1px); }
-        .action-btn-wa { background: var(--whatsapp); color: white; }
-        .action-btn-wa:hover { background: #1fb955; transform: translateY(-1px); }
-        .action-btn-donate { background: var(--blue); color: white; }
-        .action-btn-donate:hover { background: #0049a3; transform: translateY(-1px); }
-
-        .amount-input {
-            width: 100%; padding: 13px 16px;
-            border: 1.5px solid rgba(0,87,184,0.15); border-radius: 12px;
-            font-family: 'DM Sans', sans-serif; font-size: 0.9rem; color: var(--navy);
-            background: #f8faff; margin-bottom: 12px;
-            transition: border-color 0.2s;
-            outline: none;
-        }
-        .amount-input:focus { border-color: var(--blue); background: white; }
-        .amount-input::placeholder { color: var(--text-light); }
-
-        /* ── FOOTER ── */
-        footer {
-            background: var(--navy); color: white;
-            padding: 50px 5% 30px;
-            margin-top: 80px;
-        }
-        .footer-inner {
-            max-width: 1140px; margin: 0 auto;
-            display: flex; flex-direction: column; gap: 32px;
-        }
-        .footer-top { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 24px; }
-        .footer-brand .logo-wordmark { font-size: 1.3rem; margin-bottom: 8px; }
-        .footer-brand p { color: rgba(255,255,255,0.45); font-size: 0.85rem; max-width: 280px; line-height: 1.6; }
-        .footer-links { display: flex; gap: 40px; flex-wrap: wrap; }
-        .footer-col h4 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.4); margin-bottom: 14px; }
-        .footer-col a { display: block; color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.88rem; margin-bottom: 9px; transition: color 0.2s; }
-        .footer-col a:hover { color: var(--cyan); }
-        .footer-divider { border: none; border-top: 1px solid rgba(255,255,255,0.07); }
-        .footer-bottom { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
-        .footer-bottom p { font-size: 0.8rem; color: rgba(255,255,255,0.35); }
-        .footer-bottom em { font-style: normal; color: rgba(255,255,255,0.25); font-size: 0.78rem; }
-
-        /* ── RESPONSIVE ── */
-        @media (max-width: 720px) {
-            .support-grid { grid-template-columns: 1fr; }
-            .hero-stats { gap: 24px; }
-            .header-cta { display: none; }
-            #gateways { border-radius: 0; margin: 0 -5%; padding-left: 5%; padding-right: 5%; }
-        }
-
-        /* ── SCROLL REVEAL ── */
-        .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.55s ease, transform 0.55s ease; }
-        .reveal.visible { opacity: 1; transform: none; }
-    </style>
+  /* ── skip link ── */
+  .skip-link {
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(21, 86, 184, 0.45);
+    text-decoration: none;
+    opacity: 0;
+    animation: fadeUp 0.7s 1.5s ease forwards;
+    transition: color 0.2s;
+    border-bottom: 1px solid transparent;
+  }
+  .skip-link:hover { color: var(--blue-mid); border-bottom-color: var(--blue-mid); }
+</style>
 </head>
 <body>
 
-<!-- Overlay -->
-<div class="overlay" id="overlay" onclick="closeNav()"></div>
+<!-- cool wipe-transition overlay -->
+<div class="transition-overlay" id="transitionOverlay"></div>
 
-<!-- Side Nav -->
-<nav id="mySidenav" class="side-nav" aria-label="Sidebar Menu">
-    <div class="nav-header">
-        <div class="nav-logo">MI<span>ST</span></div>
-        <button class="close-btn" onclick="closeNav()" aria-label="Close menu">&#x2715;</button>
-    </div>
-    <div class="nav-links">
-        <p class="nav-section-label">Navigate</p>
-        <a href="#hero" onclick="closeNav()">🏠 Home</a>
-        <a href="#about" onclick="closeNav()">📖 What We Do</a>
-        <a href="#gateways" onclick="closeNav()">🗝 Digital Gateway</a>
-        <a href="Project.html" onclick="closeNav()">🔬 Science Fair Ideas</a>
+<!-- star field -->
+<div class="stars" id="stars"></div>
 
-        <p class="nav-section-label">Scenario Bank</p>
-        <button class="dropdown-btn" id="dropdownBtn" onclick="toggleDropdown()">
-            📚 Scenario Bank <span class="arrow">▾</span>
-        </button>
-        <div class="dropdown-container" id="scenarioDropdown">
-            <a href="view-scenarios.html">⚡ Physics Bank</a>
-            <a href="Math.html">➗ Math Bank</a>
-            <a href="Chemistry.html">🧪 Chemistry Bank</a>
-            <a href="Biology.html">🧬 Biology Bank</a>
-        </div>
-        <a href="Theme 2.html">📋 UNEB Project Ideas</a>
-        <a href="projectile.html">🎯 Ballistic Lab</a>
+<!-- main content -->
+<div class="logo-wrap">
+  <div class="belt">
+    <div class="belt-star"></div>
+    <div class="belt-star"></div>
+    <div class="belt-star"></div>
+  </div>
 
-        <p class="nav-section-label">Support</p>
-        <a href="About us.html">About us</a>
-        <a href="#donate" onclick="closeNav()">❤️ Support Us</a>
-        <a href="#contact" onclick="closeNav()">✉️ Contact</a>
-    </div>
-    <div class="nav-footer"><p>&copy; 2026 MIST · Mpigi, Uganda</p></div>
-</nav>
+  <div class="wordmark">ORION</div>
 
-<!-- Header -->
-<header id="mainHeader">
-    <button class="menu-btn" onclick="openNav()" aria-label="Open menu">
-        <span></span><span></span><span></span>
-    </button>
-    <a href="mist4.html" class="header-logo">
-        <img src="logo.png" alt="MIST Logo" onerror="this.style.display='none'">
-        <div class="logo-wordmark">MI<span>ST</span></div>
-    </a>
-    <div class="header-actions">
-        <a href="paper.html" class="header-cta">Access Papers →</a>
-    </div>
-</header>
+  <div class="divider"></div>
+  <p class="tagline">Navigate what's next</p>
 
-<main>
-    <!-- Hero -->
-    <section id="hero">
-        <div class="hero-grid-bg"></div>
-        <div class="hero-glow"></div>
-        <div class="hero-glow-2"></div>
-        <div class="hero-badge">Mpigi, Uganda · Est. 2026</div>
-        <h1>From <em>Theory</em><br>to Technology</h1>
-        <p>Uganda's hub for high school innovators, competitive debaters, and future engineers.</p>
-        <div class="hero-cta-row">
-            <a href="gallery.html" class="btn-primary">Explore Gallery ↗</a>
-            <a href="paper.html" class="btn-ghost">Access Papers</a>
-        </div>
-        <div class="hero-stats">
-            <div class="stat-item"><div class="stat-num">4<span>+</span></div><div class="stat-label">Subject Banks</div></div>
-            <div class="stat-item"><div class="stat-num">100<span>+</span></div><div class="stat-label">UNEB Papers</div></div>
-            <div class="stat-item"><div class="stat-num">∞</div><div class="stat-label">Possibilities</div></div>
-        </div>
-    </section>
+  <div class="loader-wrap">
+    <div class="bar-track"><div class="bar-fill" id="barFill"></div></div>
+    <span class="pct" id="pct">0%</span>
+  </div>
 
-    <!-- About -->
-    <section id="about">
-        <div class="section-header reveal">
-            <span class="section-label">Our Mission</span>
-            <h2 class="section-title">What We Do</h2>
-            <p class="section-desc">We equip Ugandan high school students with resources, tools, and community to excel in STEM and beyond.</p>
-        </div>
-        <div class="features-grid">
-            <div class="feature-card reveal">
-                <div class="card-icon">🎓</div>
-                <h3>Academic Mastery</h3>
-                <p>Streamlined access to UNEB Papers to ensure every innovator has the foundation needed for Senior 4 and beyond.</p>
-            </div>
-            <div class="feature-card reveal">
-                <div class="card-icon">🔭</div>
-                <h3>The Scenario Bank</h3>
-                <p>A dedicated repository for high-stakes problem solving and industrial chemistry applications — built by students, for students.</p>
-            </div>
-            <div class="feature-card reveal">
-                <div class="card-icon">⚗️</div>
-                <h3>Innovators Lab</h3>
-                <p>Moving beyond textbooks to manufacture practical goods like industrial chalk and soap through hands-on projects.</p>
-            </div>
-            <div class="feature-card reveal">
-                <div class="card-icon">🏆</div>
-                <h3>Competitive Edge</h3>
-                <p>Training ground for school debate tournaments, focusing on logic, research, and technical defense strategies.</p>
-            </div>
-        </div>
-    </section>
+  <a href="home.html" class="skip-link" id="skipLink">Skip →</a>
+</div>
 
-    <!-- Gateways -->
-    <section id="gateways">
-        <div class="section-header reveal">
-            <span class="section-label">Platform</span>
-            <h2 class="section-title">The Digital Gateway</h2>
-            <p class="section-desc">Three core tools to deposit, explore, and apply scientific knowledge across disciplines.</p>
-        </div>
-        <div class="gateway-grid">
-            <div class="gateway-card reveal">
-                <div class="gateway-number">01</div>
-                <h3>Deposit Scenario</h3>
-                <p>Submit new scientific challenges or project ideas to grow our shared knowledge base.</p>
-            </div>
-            <div class="gateway-card reveal">
-                <div class="gateway-number">02</div>
-                <h3>Gallery of Science</h3>
-                <p>View visual documentation of our current prototypes and live lab experiments.</p>
-            </div>
-            <div class="gateway-card reveal">
-                <div class="gateway-number">03</div>
-                <h3>Scenario Bank</h3>
-                <p>Browse curated, peer-reviewed solutions to complex scientific problems by subject.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Support -->
-    <section id="support">
-        <div class="section-header center reveal">
-            <span class="section-label">Connect</span>
-            <h2 class="section-title">Join the Movement</h2>
-            <p class="section-desc">Reach out, get involved, or support the next generation of Ugandan innovators.</p>
-        </div>
-        <div class="support-grid">
-            <div class="support-card reveal" id="contact">
-                <h2>Get in Touch</h2>
-                <p>Join our network of Ugandan student leaders, educators, and tech enthusiasts. We'd love to hear from you.</p>
-                <a href="mailto:leadership@mist.ug?subject=Inquiry" class="action-btn action-btn-primary">✉️ Send an Email</a>
-                <a href="https://wa.me/256XXXXXXXXX" target="_blank" rel="noopener noreferrer" class="action-btn action-btn-wa">💬 Chat on WhatsApp</a>
-            </div>
-            <div class="support-card reveal" id="donate">
-                <h2>Support Innovation</h2>
-                <p>Every contribution directly funds raw materials for science club projects and keeps our platform free for all students.</p>
-                <input type="number" id="amount" class="amount-input" placeholder="Enter amount (UGX)" aria-label="Donation amount in UGX">
-                <button class="action-btn action-btn-donate" onclick="payFlutterwave()">❤️ Donate via Flutterwave</button>
-            </div>
-        </div>
-    </section>
-</main>
-
-<!-- Footer -->
-<footer>
-    <div class="footer-inner">
-        <div class="footer-top">
-            <div class="footer-brand">
-                <div class="logo-wordmark">MI<span style="color:var(--cyan)">ST</span></div>
-                <p>Uganda's premier hub for high school innovators and future engineers. Established to turn student curiosity into national infrastructure.</p>
-            </div>
-            <div class="footer-links">
-                <div class="footer-col">
-                    <h4>Platform</h4>
-                    <a href="gallery.html">Gallery</a>
-                    <a href="paper.html">UNEB Papers</a>
-                    <a href="Project.html">Science Fair Ideas</a>
-                    <a href="projectile.html">Ballistic Lab</a>
-                </div>
-                <div class="footer-col">
-                    <h4>Scenario Bank</h4>
-                    <a href="view-scenarios.html">Physics</a>
-                    <a href="Math.html">Mathematics</a>
-                    <a href="Chemistry.html">Chemistry</a>
-                    <a href="Biology.html">Biology</a>
-                </div>
-                <div class="footer-col">
-                    <h4>Organisation</h4>
-                    <a href="#about">About</a>
-                    <a href="#contact">Contact</a>
-                    <a href="#donate">Support Us</a>
-                    <a href="Theme 2.html">UNEB Projects</a>
-                </div>
-            </div>
-        </div>
-        <hr class="footer-divider">
-        <div class="footer-bottom">
-            <p>&copy; 2026 MIST | Mpigi, Uganda</p>
-            <em>Established to turn student curiosity into national infrastructure.</em>
-        </div>
-    </div>
-</footer>
-
-<script src="https://checkout.flutterwave.com/v3.js"></script>
 <script>
-    // Nav
-    function openNav() {
-        document.getElementById("mySidenav").classList.add("open");
-        document.getElementById("overlay").classList.add("active");
-        document.body.style.overflow = "hidden";
-    }
-    function closeNav() {
-        document.getElementById("mySidenav").classList.remove("open");
-        document.getElementById("overlay").classList.remove("active");
-        document.body.style.overflow = "";
-    }
-    function toggleDropdown() {
-        const d = document.getElementById("scenarioDropdown");
-        const btn = document.getElementById("dropdownBtn");
-        d.classList.toggle("show");
-        btn.classList.toggle("open");
-        btn.setAttribute("aria-expanded", d.classList.contains("show"));
-    }
+  /* generate stars */
+  const starsEl = document.getElementById('stars');
+  for (let i = 0; i < 60; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    const size = Math.random() * 3 + 1;
+    s.style.cssText = `
+      width:${size}px; height:${size}px;
+      top:${Math.random()*100}%;
+      left:${Math.random()*100}%;
+      --d:${(Math.random()*2+1.5).toFixed(2)}s;
+      --op:${(Math.random()*0.25+0.08).toFixed(2)};
+      animation-delay:${(Math.random()*3).toFixed(2)}s;
+    `;
+    starsEl.appendChild(s);
+  }
 
-    // Header scroll shadow
-    window.addEventListener("scroll", () => {
-        document.getElementById("mainHeader").classList.toggle("scrolled", window.scrollY > 10);
-    });
+  /* percentage counter synced to CSS bar (2.4s fill starting at 1.3s) */
+  const pct = document.getElementById('pct');
+  const overlay = document.getElementById('transitionOverlay');
+  let start = null;
+  const duration = 2400;
+  const delay = 1300;
+  let redirected = false;
 
-    // Scroll reveal
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach((e, i) => {
-            if (e.isIntersecting) {
-                e.target.style.transitionDelay = (i * 0.06) + "s";
-                e.target.classList.add("visible");
-                observer.unobserve(e.target);
-            }
-        });
-    }, { threshold: 0.12 });
-    document.querySelectorAll(".reveal").forEach(el => observer.observe(el));
+  function navigateToHome() {
+    if (redirected) return;
+    redirected = true;
 
-    // Donation
-    function payFlutterwave() {
-        const amt = document.getElementById("amount").value || 5000;
-        FlutterwaveCheckout({
-            public_key: "YOUR_FLUTTERWAVE_KEY",
-            tx_ref: "MIST-" + Date.now(),
-            amount: amt,
-            currency: "UGX",
-            customer: { email: "donor@mist.ug", name: "MIST Supporter" }
-        });
+    /* trigger the wipe */
+    overlay.classList.add('go');
+
+    /* after the wipe covers the screen, go to index */
+    setTimeout(() => {
+      window.location.href = 'home.html';
+    }, 680);
+  }
+
+  function tick(ts) {
+    if (!start) start = ts;
+    const elapsed = ts - start - delay;
+    if (elapsed < 0) { requestAnimationFrame(tick); return; }
+    const progress = Math.min(elapsed / duration, 1);
+    pct.textContent = Math.floor(progress * 100) + '%';
+    if (progress < 1) {
+      requestAnimationFrame(tick);
+    } else {
+      pct.textContent = '100%';
+      /* small pause so the user sees 100%, then transition */
+      setTimeout(navigateToHome, 200);
     }
+  }
+  requestAnimationFrame(tick);
+
+  /* also allow skip link to use the same cool transition */
+  document.getElementById('skipLink').addEventListener('click', function(e) {
+    e.preventDefault();
+    navigateToHome();
+  });
 </script>
 </body>
 </html>

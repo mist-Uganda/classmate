@@ -145,7 +145,7 @@
 <body>
 
 <header>
-    <a href="index.html" style="text-decoration: none; color: var(--primary); font-weight: bold;">&larr; Back</a>
+    <a href="home.html" style="text-decoration: none; color: var(--primary); font-weight: bold;">&larr; Back</a>
     <div style="width: 30px;"></div>
 </header>
     <div class="math-hero">
@@ -163,7 +163,11 @@
     <p>Decoding the Patterns of Reality</p>
 </div>
 
-
+<div class="container" style="margin-bottom: 25px;">
+    <input type="text" id="searchInput" placeholder="Search tags, or descriptions..." 
+           style="width: 100%; padding: 14px; border-radius: 12px; border: 1px solid #2d2d3d; background: #16161e; color: #ececed; outline: none; font-size: 1rem;">
+</div>
+    
 <section>
     <div class="scenario-card">
         <span class="category-tag">Geometry</span>
@@ -227,6 +231,19 @@
 </section>
 
 <script>
+       // Targeted selection of the search field and all existing audio cards
+    const searchInput = document.getElementById('searchInput');
+    const cards = document.querySelectorAll('.audio-card');
+
+    // Event listener to filter content in real-time
+    searchInput.addEventListener('input', () => {
+        const query = searchInput.value.toLowerCase();
+        
+        cards.forEach(card => {
+            const isVisible = card.textContent.toLowerCase().includes(query);
+            card.style.display = isVisible ? 'flex' : 'none';
+        });
+    });
     function toggleAnswer(btn) {
         const box = btn.nextElementSibling;
         if (box.style.display === "block") {
